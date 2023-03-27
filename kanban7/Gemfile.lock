@@ -144,6 +144,8 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sqlite3 (1.6.1-x86_64-linux)
+    tailwindcss-rails (2.0.10-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.1)
     timeout (0.3.2)
     tzinfo (2.0.6)
@@ -160,6 +162,7 @@ DEPENDENCIES
   kanban7!
   sprockets-rails
   sqlite3
+  tailwindcss-rails (= 2.0.10)
 
 BUNDLED WITH
    2.3.7
