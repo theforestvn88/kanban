@@ -47,6 +47,7 @@ module Devise
             end
 
             def scaffold
+                # models
                 @migration_version = "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
                 unless @list_model.columns_hash.key?("position")
                     @table_name = list.tableize
@@ -58,14 +59,19 @@ module Devise
                     migration_template "migrations/add_position.rb", "#{db_migrate_path}/add_position_to_#{@table_name}.rb"
                 end
 
-                puts "!!! Please run `rails db:migrate` to add :position columns to kanban-model table" if @table_name
+                puts "!!! Please run `rails db:migrate` to add :position columns to the kanban-model table" if @table_name
 
+                # views
                 template "controllers/boards_controller.rb", "app/controllers/#{@board_name}_kanban_controller.rb"
                 template "views/boards/_header.html.erb", "app/views/#{@board_name}_kanban/boards/_header.html.erb"
                 template "views/lists/_header.html.erb", "app/views/#{@board_name}_kanban/lists/_header.html.erb"
                 template "views/lists/_form.html.erb", "app/views/#{@board_name}_kanban/lists/_form.html.erb"
                 template "views/cards/_item.html.erb", "app/views/#{@board_name}_kanban/cards/_item.html.erb"
                 template "views/cards/_form.html.erb", "app/views/#{@board_name}_kanban/cards/_form.html.erb"
+
+                # routes
+                kanban_route = "kanban :#{@board_name}, :#{@list_name}, :#{@card_name}"
+                route kanban_route
             end
         end
     end

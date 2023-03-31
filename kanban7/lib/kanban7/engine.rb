@@ -1,3 +1,5 @@
+require 'kanban7/rails/routes'
+
 module Kanban7
   class Engine < ::Rails::Engine
     isolate_namespace Kanban7
