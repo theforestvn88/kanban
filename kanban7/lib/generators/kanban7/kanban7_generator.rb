@@ -11,11 +11,14 @@ module Devise
             namespace "kanban7"
             source_root File.expand_path("../../templates/", __FILE__)
 
+            argument :name, require: true
             argument :board, required: true
             argument :list, required: true
             argument :card, required: true
 
             def validate
+                @kanban_name = name
+
                 @board_model = board.to_s.classify.constantize
                 unless @board_model.superclass == ApplicationRecord
                     raise ArgumentError, "board model(#{@board_model}) should be an ApplicationRecord"
@@ -61,17 +64,23 @@ module Devise
 
                 puts "!!! Please run `rails db:migrate` to add :position columns to the kanban-model table" if @table_name
 
+
                 # views
-                template "controllers/boards_controller.rb", "app/controllers/#{@board_name}_kanban_controller.rb"
-                template "views/boards/_header.html.erb", "app/views/#{@board_name}_kanban/boards/_header.html.erb"
-                template "views/lists/_header.html.erb", "app/views/#{@board_name}_kanban/lists/_header.html.erb"
-                template "views/lists/_form.html.erb", "app/views/#{@board_name}_kanban/lists/_form.html.erb"
-                template "views/cards/_item.html.erb", "app/views/#{@board_name}_kanban/cards/_item.html.erb"
-                template "views/cards/_form.html.erb", "app/views/#{@board_name}_kanban/cards/_form.html.erb"
+                template "controllers/boards_controller.rb", "app/controllers/#{name}_kanban_controller.rb"
+                template "views/boards/_header.html.erb", "app/views/#{name}_kanban/#{@boards_name}/_header.html.erb"
+                template "views/lists/_header.html.erb", "app/views/#{name}_kanban/#{@lists_name}/_header.html.erb"
+                template "views/lists/_form.html.erb", "app/views/#{name}_kanban/#{@lists_name}/_form.html.erb"
+                template "views/cards/_item.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_item.html.erb"
+                template "views/cards/_form.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_form.html.erb"
+
 
                 # routes
-                kanban_route = "kanban :#{@board_name}, :#{@list_name}, :#{@card_name}"
+                kanban_route = "kanban '#{name}', board: '#{@board_name}', list: '#{@list_name}', card: '#{@card_name}'"
                 route kanban_route
+
+                
+                # initializer
+                insert_into_file "config/initializers/kanban7.rb", "Kanban7.define_board '#{name}', board_model: '#{@board_model}', list_model: '#{@list_model}', card_model: '#{@card_model}'\n"
             end
         end
     end

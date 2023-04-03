@@ -1,4 +1,5 @@
 require 'kanban7/rails/routes'
+require 'kanban7/board_configs'
 
 module Kanban7
   class Engine < ::Rails::Engine

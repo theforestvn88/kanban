@@ -1,12 +1,12 @@
 module ActionDispatch::Routing
     class Mapper
-        def kanban(board, list, card)
-            namespace :kanban7 do
-                get '/boards/:id', to: 'boards#show', as: 'kanban_board'
-                post '/lists/', to: 'lists#create', as: 'kanban_create_list'
-                put '/lists/:id', to: 'lists#update', as: 'kanban_update_list'
-                post '/cards/', to: 'cards#create', as: 'kanban_create_card'
-                put '/cards/:id', to: 'cards#update', as: 'kanban_update_card'
+        def kanban(name, board: "board", list: "list", card: "card")
+            scope "/kanban" do
+                get '/b/:id/:type/:name', to: "#{name}_kanban#show", as: "#{name}_kanban", :defaults => { :name => name, :type => "#{board}" }
+                post '/l/:type/:name', to: 'lists#create', as: "#{name}_kanban_create_#{list}", :defaults => { :name => name, :type => "#{list}" }
+                put '/l/:id/:type/:name', to: 'lists#update', as: "#{name}_kanban_update_#{list}", :defaults => { :name => name, :type => "#{list}" }
+                post '/c/:type/:name', to: 'cards#create', as: "#{name}_kanban_create_#{card}", :defaults => { :name => name, :type => "#{card}" }
+                put '/c/:id/:type/:name', to: 'cards#update', as: "#{name}_kanban_update_#{card}", :defaults => { :name => name, :type => "#{card}" }
             end
         end
     end

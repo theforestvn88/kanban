@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-class <%= @board_model %>KanbanController < Kanban7::BoardsController
+class <%= @kanban_name.camelize %>KanbanController < Kanban7::BoardsController
     <% if @fixed_lists %>fixed_lists: %w[ ].freeze<%end%>
     # def show
     #   super
     # end
 
-    # protected
+    protected
     
 <% if @fixed_lists %>
-        def fetch_<%= @cards_name %>(<%= @board_name %>, list, order, offset, limit)
-            <%= @card_model %>.where(<%= @board_name %>: <%= @board_name %>, list: list).order(position: order).offset(offset).limit(limit)
+        def fetch_<%= @cards_name %>(board, list, order, offset, limit)
+            <%= @card_model %>.where(<%= @board_name %>: list, <%= @list_name %>: list).order(position: order).offset(offset).limit(limit)
         end
-<% else %>        # def fetch_<%= @lists_name %>(<%= @board_name %>, order, offset, limit)
-        #     <%= @list_model %>.where(<%= @board_name %>: <%= @board_name %>).order(position: order).offset(offset).limit(limit)
-        # end
+<% else %>        def fetch_<%= @lists_name %>(board, order, offset, limit)
+             <%= @list_model %>.where(<%= @board_name %>: board).order(position: order).offset(offset).limit(limit)
+        end
 
-        # def fetch_<%= @cards_name %>(<%= @board_name %>, <%= @list_name %>, order, offset, limit)
-        #     <%= @card_model %>.where(<%= @board_name %>: <%= @board_name %>, <%= @list_name %>: <%= @list_name %>).order(position: order).offset(offset).limit(limit)
-        # end
+        def fetch_<%= @cards_name %>(list, order, offset, limit)
+             <%= @card_model %>.where(<%= @list_name %>: list).order(position: order).offset(offset).limit(limit)
+        end
 <% end %>
         # def board_policy(board)
         #       board.user_id == current_user.id
