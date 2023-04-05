@@ -1,0 +1,12 @@
+<div
+    class="bg-slate-200 p-2" 
+    draggable="true"
+    droppable="true" 
+    id="<%= dom_id(card) %>"
+    data-currpos="<%= card.position %>" 
+    data-prevpos="<%= prev %>"
+    data-listid="<%= list_id %>">
+  <div class="bg-white text-md p-2 rounded">
+    <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
+  </div>
+</div>

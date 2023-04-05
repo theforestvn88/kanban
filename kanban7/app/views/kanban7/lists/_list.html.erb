@@ -1,0 +1,36 @@
+<div id=<%= dom_id(list) %> 
+    data-controller="kanban-list"
+    draggable="true" 
+    droppable="true"
+    data-currpos="<%= (list.position || list.id) %>"
+    data-prevpos="<%= prev %>">
+
+    <div class="bg-slate-200 rounded-t p-3 font-bold" droppable="false">
+        <%= render partial: board_configs.header_list_partial, locals: { board_configs.list_model_symbol => list } %>
+    </div>
+
+    <%= turbo_frame_tag "#{dom_id(list)}_cards" do %>
+        <div class="h-176 w-72 overflow-x-hidden overflow-y-auto relative">
+            <% cards = fetch_cards(list, params[:order] || :asc, params[:offset], params[:limit]) %>
+            <% cards.each_with_index do |card, i| %>
+                <%= render "kanban7/cards/card", card: card, prev: i > 0 ? cards[i-1].position : 0, list_id: list.id, board_configs: board_configs  %>
+            <% end %>
+
+            <%= turbo_frame_tag "#{dom_id(list)}_new_card" %>
+
+            <div data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
+                <%= render partial: board_configs.form_card_partial, locals: {board_configs.list_model_symbol => list, board_configs.card_model_symbol => board_configs.card_model.new(board_configs.list_model_symbol => list)} %>
+            </div>
+
+            <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
+                draggable="false" droppable="true" 
+                data-listid="<%= list.id %>"
+                id="card_list<%= list.id %>" 
+                data-currpos="<%= (cards.last&.position || 0) + 1 %>" 
+                data-prevpos="<%= cards.last&.position || 0 %>"
+                class="w-72 bg-slate-200 hover:border hover:border-slate-300 text-white text-left pl-2 py-4 rounded-b sticky bottom-0 left-0 right-0">
+                + Add a card
+            </button>
+        </div>
+    <% end %>
+</div>

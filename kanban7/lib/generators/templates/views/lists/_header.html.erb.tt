@@ -1,0 +1,1 @@
+<p><%= @list_model.name %> <%%= <%= @list_name %>.id %></p>

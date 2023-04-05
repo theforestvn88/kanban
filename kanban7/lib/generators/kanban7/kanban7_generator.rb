@@ -16,6 +16,8 @@ module Devise
             argument :list, required: true
             argument :card, required: true
 
+            REJECT_ATTRIBUTES = %w( id position created_at updated_at )
+
             def validate
                 @kanban_name = name
 
@@ -25,7 +27,9 @@ module Devise
                 end
 
                 @board_name = @board_model.name.downcase
+                @board_id = @board_name + "_id"
                 @boards_name = @board_name.pluralize
+
 
                 if list == :fixed
                     @fixed_lists = true
@@ -36,8 +40,15 @@ module Devise
                     end
 
                     @list_name = @list_model.name.downcase
+                    @list_id = @list_name + "_id"
                     @lists_name = @list_name.pluralize
+                    @list_attributes = @list_model.columns.reject { |c| 
+                        REJECT_ATTRIBUTES.include?(c.name) || c.name == @board_id
+                    }.map { |c| 
+                        Rails::Generators::GeneratedAttribute.parse("#{c.name}:#{c.type}") 
+                    }
                 end
+
 
                 @card_model = card.to_s.classify.constantize
                 unless @card_model.superclass == ApplicationRecord
@@ -46,7 +57,11 @@ module Devise
 
                 @card_name = @card_model.name.downcase
                 @cards_name = @card_name.pluralize
-
+                @card_attributes = @card_model.columns.reject { |c| 
+                    REJECT_ATTRIBUTES.include?(c.name) || c.name == @list_id
+                }.map { |c| 
+                    Rails::Generators::GeneratedAttribute.parse("#{c.name}:#{c.type}") 
+                }
             end
 
             def scaffold
