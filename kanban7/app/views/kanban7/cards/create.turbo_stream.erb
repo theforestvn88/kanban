@@ -1,0 +1,6 @@
+<% if @card.errors.any? %>
+<% else %>
+    <%= turbo_stream.append "#{dom_id(@list)}_new_card" do %>
+        <%= render "kanban7/cards/card", card: @card, list_id: @list.id, prev: 0, board_configs: @board_configs %>
+    <% end %>
+<% end %>

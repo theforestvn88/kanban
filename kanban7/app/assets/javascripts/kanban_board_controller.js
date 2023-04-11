@@ -2,10 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [ "addListBtn", "formList" ]
-    static values = { list: Number, currpos: Number, prevpos: Number }
+    static values = { name: String }
 
     connect() {
-        console.log("Board Controller connected !!!")
+        console.log(`${this.nameValue} Board Controller connected !!!`)
         this.root = document.documentElement;
     }
 
@@ -60,17 +60,18 @@ export default class extends Controller {
         if (dropTarget) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
             const dropId = dropTarget.getAttribute("id")
+            const [dropObjectType, dropObjectId] = dropId.split("_")
             const currPos = parseFloat(dropTarget.getAttribute("data-currpos"))
             const prevPos = parseFloat(dropTarget.getAttribute("data-prevpos"))
             const listId = dropTarget.getAttribute("data-listid")
 
             const dropBody = {}
             dropBody[`${dragObjectType}`] = {}
-            if (listId) dropBody[`${dragObjectType}`]["list_id"] = `${listId}`
+            if (listId) dropBody[`${dragObjectType}`][`${dropObjectType}_id`] = `${listId}`
             dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
             dropBody["next_view_id"] = `${dropId}`
 
-            this.#sendDropApi(`/${dragObjectType}s/${dragObjectId}`, dropBody)
+            this.#sendDropApi(`${this.nameValue}/${dropObjectType}s/${dropObjectId}/${dragObjectType}s/${dragObjectId}`, dropBody)
                 .then (response => response.text())
                 .then(html => Turbo.renderStreamMessage(html))
                 .catch(error => {

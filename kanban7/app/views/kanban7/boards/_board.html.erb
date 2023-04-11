@@ -1,5 +1,6 @@
 <div 
-    data-controller="kanban-board" 
+    data-controller="kanban-board"
+    data-kanban-board-name-value="<%= board_configs.kanban_name %>"
     data-action="dragstart->kanban-board#dragStart dragover->kanban-board#dragOver dragleave->kanban-board#dragLeave dragenter->kanban-board#dragEnter drop->kanban-board#drop dragEnd->kanban-board#dragEnd"
     class="h-screen bg-red-50 overflow-x-auto overflow-y-hidden">
   <div class="p-14 mt-16">
