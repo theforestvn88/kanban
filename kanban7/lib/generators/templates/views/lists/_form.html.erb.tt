@@ -1,4 +1,4 @@
-<%%= form_with(model: <%= @list_name %>) do |form| %>
+<%%= form_with(model: <%= @list_name %>, url: Rails.application.routes.url_helpers.<%= @kanban_name %>_kanban_create_<%= @list_name %>_path(<%= @board_id %>: <%= @board_name %>.id)) do |form| %>
   <%% if <%= @list_name %>.errors.any? %>
     <div style="color: red">
       <h2><%%= pluralize(<%= @list_name %>.errors.count, "error") %> prohibited this <%= @list_name %> from being saved:</h2>

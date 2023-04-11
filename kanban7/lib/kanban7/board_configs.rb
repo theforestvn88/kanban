@@ -11,6 +11,10 @@ module Kanban7
             @configs = configs
         end
 
+        def kanban_name
+            @board_name
+        end
+
         def board_model
             @board_model ||= @configs[:board_model]&.constantize
         end
