@@ -60,18 +60,18 @@ export default class extends Controller {
         if (dropTarget) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
             const dropId = dropTarget.getAttribute("id")
-            const [dropObjectType, dropObjectId] = dropId.split("_")
             const currPos = parseFloat(dropTarget.getAttribute("data-currpos"))
             const prevPos = parseFloat(dropTarget.getAttribute("data-prevpos"))
+            const listType = dropTarget.getAttribute("data-listtype")
             const listId = dropTarget.getAttribute("data-listid")
 
             const dropBody = {}
             dropBody[`${dragObjectType}`] = {}
-            if (listId) dropBody[`${dragObjectType}`][`${dropObjectType}_id`] = `${listId}`
+            if (listId) dropBody[`${dragObjectType}`][`${listType}_id`] = `${listId}`
             dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
             dropBody["next_view_id"] = `${dropId}`
 
-            this.#sendDropApi(`${this.nameValue}/${dropObjectType}s/${dropObjectId}/${dragObjectType}s/${dragObjectId}`, dropBody)
+            this.#sendDropApi(`/kanban7/${this.nameValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
                 .then (response => response.text())
                 .then(html => Turbo.renderStreamMessage(html))
                 .catch(error => {

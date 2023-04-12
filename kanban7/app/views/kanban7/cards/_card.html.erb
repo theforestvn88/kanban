@@ -5,7 +5,8 @@
     id="<%= dom_id(card) %>"
     data-currpos="<%= card.position %>" 
     data-prevpos="<%= prev %>"
-    data-listid="<%= list_id %>">
+    data-listid="<%= card.send("#{@board_configs.list_model_name}_id") %>"
+    data-listtype="<%= board_configs.list_model_name %>">
   <div class="bg-white text-md p-2 rounded">
     <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
   </div>

@@ -1,6 +1,6 @@
 <% if @list.errors.any? %>
 <% else %>
     <%= turbo_stream.append "new-list" do %>
-        <%= render "kanban7/lists/list", list: @list, board: @board, prev: 0, board_configs: @board_configs %>
+        <%= render "kanban7/lists/list", list: @list, prev: 0, board_configs: @board_configs %>
     <% end %>
 <% end %>
