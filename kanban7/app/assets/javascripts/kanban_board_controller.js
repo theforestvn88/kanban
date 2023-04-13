@@ -33,7 +33,7 @@ export default class extends Controller {
         
         const dragObjectType = event.dataTransfer.getData("type")
         this.cloneDI.classList.add("hidden")
-        let dropEl = this.#findDropObject(event.x, event.y, dragObjectType)
+        let dropEl = this.#findDropObject(event.x, event.y)
         if (dropEl) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
             this.preDropOverElement = dropEl
@@ -56,24 +56,27 @@ export default class extends Controller {
         const dragObjectId = event.dataTransfer.getData("id")
 
         this.cloneDI.classList.add("hidden")
-        let dropTarget = this.#findDropObject(event.x, event.y, dragObjectType)
+        let dropTarget = this.#findDropObject(event.x, event.y)
         if (dropTarget) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
             const dropId = dropTarget.getAttribute("id")
             const currPos = parseFloat(dropTarget.getAttribute("data-currpos"))
             const prevPos = parseFloat(dropTarget.getAttribute("data-prevpos"))
-            const listType = dropTarget.getAttribute("data-listtype")
-            const listId = dropTarget.getAttribute("data-listid")
+            const parentType = dropTarget.getAttribute("data-parenttype")
+            const parentId = dropTarget.getAttribute("data-parentid")
 
             const dropBody = {}
             dropBody[`${dragObjectType}`] = {}
-            if (listId) dropBody[`${dragObjectType}`][`${listType}_id`] = `${listId}`
+            if (parentId) dropBody[`${dragObjectType}`][`${parentType}_id`] = `${parentId}`
             dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
-            dropBody["next_view_id"] = `${dropId}`
+            if (dropId) dropBody["next_view_id"] = `${dropId}`
 
             this.#sendDropApi(`/kanban7/${this.nameValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
                 .then (response => response.text())
-                .then(html => Turbo.renderStreamMessage(html))
+                .then(html => {
+                    Turbo.renderStreamMessage(html)
+                    this.cloneDI.remove()
+                })
                 .catch(error => {
                     console.log(error)
                     document.getElementById(`${dragObjectType}_${dragObjectId}`)?.classList?.remove("hidden")
@@ -112,13 +115,13 @@ export default class extends Controller {
         this.cloneDI.style.top = t + 'px'
     }
 
-    #findDropObject(mouseX, mouseY, objectType) {
+    #findDropObject(mouseX, mouseY, viewType) {
         let el = document.elementFromPoint(mouseX, mouseY)
         let droppable = el.getAttribute("droppable") 
         if (!droppable || droppable == "false") {
           el = el.closest(`[droppable='true']`)
         }
-        if (el && el.getAttribute("droppable") === "true" && el.getAttribute("id").split("_")[0] === objectType) {
+        if (el && el.getAttribute("droppable") === "true" && el.getAttribute("data-viewtype") === this.cloneDI.getAttribute("data-viewtype")) {
             return el;
         }
     }

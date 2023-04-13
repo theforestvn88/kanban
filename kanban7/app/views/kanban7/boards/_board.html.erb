@@ -9,13 +9,26 @@
 
     <div id="lists" class="mt-5 ml-5 grid grid-flow-col auto-cols-max gap-4">
         <% lists.each_with_index do |list, i| %>
-            <%= render "kanban7/lists/list", list: list, prev: i > 0 ? (lists[i-1].position || lists[i-1].id) : 0, board: board, board_configs: board_configs  %>
+            <%= render "kanban7/lists/list", list: list, prev: position(lists[i-1], i-1), board: board, board_configs: board_configs  %>
         <% end %>
 
         <% unless board_configs.is_fixed_lists? %>
           <%= turbo_frame_tag "new-list" %>
 
-          <div data-kanban-board-target="formList" class="hidden">
+          <button data-kanban-board-target="addListBtn" data-action="kanban-board#showListForm" class="w-72 h-12 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded"
+              draggable="false"
+              droppable="true"
+              id="list_board<%= board.id %>"
+              data-viewtype="list"
+              data-currpos="" 
+              data-prevpos="<%= position(lists.last) %>">
+            + Add another list
+          </button>
+          
+          <div class="hidden"
+              data-kanban-board-target="formList"
+              draggable="false"
+              droppable="false">
               <%= render partial: board_configs.form_list_partial, 
                   locals: {
                     board_configs.board_model_symbol => board, 
@@ -23,8 +36,6 @@
                   } 
               %>
           </div>
-
-          <button data-kanban-board-target="addListBtn" data-action="kanban-board#showListForm" class="w-72 h-12 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded">+ Add another list</button>
         <% end %>
     </div>
   </div>
