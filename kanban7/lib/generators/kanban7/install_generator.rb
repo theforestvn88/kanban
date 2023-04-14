@@ -25,7 +25,7 @@ module Kanban7
 
                 if app_layout_path.exist?
                     say "Add kanban7 css include tag in application layout"
-                    insert_into_file app_layout_path.to_s, "\n    <%= stylesheet_link_tag \"kanban7\", \"data-turbo-track\": \"reload\" %>", before: /\s*<\/head>/
+                    insert_into_file app_layout_path.to_s, "\n    <%= stylesheet_link_tag \"kanban7\", \"data-turbo-track\": \"reload\" %>\n", before: /\s\s\s\s\<\%\= stylesheet_link_tag \"application\"/
                 else
                     say "Default application.html.erb is missing!", :red
                     say "        Add <%= stylesheet_link_tag 'kanban7', 'data-turbo-track': 'reload' %> within the <head> tag in your custom layout."
