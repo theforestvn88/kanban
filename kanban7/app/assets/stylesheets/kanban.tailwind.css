@@ -1,0 +1,39 @@
+@tailwind components;
+
+@layer components {
+    .board {
+        @apply h-screen bg-red-50 overflow-x-auto overflow-y-hidden;
+    }
+
+    .board .lists {
+        @apply mt-5 ml-5 grid grid-flow-col auto-cols-max gap-4;
+    }
+
+    .board .add-list-btn {
+        @apply w-72 h-12 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
+    }
+
+    .list-header {
+        @apply bg-slate-200 rounded-t p-3 font-bold;
+    }
+
+    .list {
+        @apply h-176 w-72 overflow-x-hidden overflow-y-auto relative;
+    }
+
+    .list-gap {
+        @apply !pl-60;
+    }
+
+    .list .add-card-btn {
+        @apply w-72 bg-slate-200 hover:border hover:border-slate-300 text-white text-left pl-2 py-4 rounded-b sticky bottom-0 left-0 right-0;
+    }
+
+    .card {
+        @apply bg-slate-200 p-2;
+    }
+
+    .card-gap {
+        @apply !pt-14;
+    }
+}

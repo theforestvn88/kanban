@@ -31,13 +31,12 @@ export default class extends Controller {
         console.log("DRAG OVER ....")
         this.#moveDragItem(event.x, event.y)
         
-        const dragObjectType = event.dataTransfer.getData("type")
         this.cloneDI.classList.add("hidden")
         let dropEl = this.#findDropObject(event.x, event.y)
         if (dropEl) {
-            if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
+            if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle())
             this.preDropOverElement = dropEl
-            this.preDropOverElement.classList.add(this.#paddingStyle(dragObjectType))
+            this.preDropOverElement.classList.add(this.#paddingStyle())
         }
         this.cloneDI.classList.remove("hidden")
 
@@ -58,7 +57,7 @@ export default class extends Controller {
         this.cloneDI.classList.add("hidden")
         let dropTarget = this.#findDropObject(event.x, event.y)
         if (dropTarget) {
-            if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle(dragObjectType))
+            if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle())
             const dropId = dropTarget.getAttribute("id")
             const currPos = parseFloat(dropTarget.getAttribute("data-currpos"))
             const prevPos = parseFloat(dropTarget.getAttribute("data-prevpos"))
@@ -141,7 +140,7 @@ export default class extends Controller {
         })
     }
 
-    #paddingStyle(dragObjectType) {
-        return dragObjectType === "card" ? "pt-14" : "pl-60"
+    #paddingStyle() {
+        return `${this.cloneDI.getAttribute("data-viewtype")}-gap` // card-gap list-gap
     }
 }

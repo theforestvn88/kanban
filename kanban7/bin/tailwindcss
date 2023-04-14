@@ -1,3 +1,11 @@
 #!/usr/bin/env sh
 
-$(bundle show tailwindcss-rails)/exe/tailwindcss -i app/assets/stylesheets/kanban7.tailwind.css -o app/assets/stylesheets/kanban7.css -c bin/tailwind.config.js --minify -w
+$(bundle show tailwindcss-rails)/exe/tailwindcss -i app/assets/stylesheets/kanban.tailwind.css -o app/assets/stylesheets/kanban.css -c bin/tailwind.config.js;
+
+
+$(bundle show tailwindcss-rails)/exe/tailwindcss -i app/assets/stylesheets/core.tailwind.css -o app/assets/stylesheets/kanban7.css -c bin/tailwind.config.js;
+
+
+
+
+cat app/assets/stylesheets/kanban.css >> app/assets/stylesheets/kanban7.css;
