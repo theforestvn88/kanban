@@ -13,29 +13,31 @@
         <% end %>
 
         <% unless board_configs.is_fixed_lists? %>
-          <%= turbo_frame_tag "new-list" %>
-
-          <button data-kanban-board-target="addListBtn" data-action="kanban-board#showListForm" class="add-list-btn"
-              draggable="false"
-              droppable="true"
-              id="list_board<%= board.id %>"
-              data-viewtype="list"
-              data-currpos="" 
-              data-prevpos="<%= position(lists.last) %>">
-            + Add another list
-          </button>
           
-          <div class="hidden"
-              data-kanban-board-target="formList"
-              draggable="false"
-              droppable="false">
-              <%= render partial: board_configs.form_list_partial, 
-                  locals: {
-                    board_configs.board_model_symbol => board, 
-                    board_configs.list_model_symbol => board_configs.list_model.new(board_configs.board_model_symbol => board)
-                  } 
-              %>
-          </div>
+          <%= turbo_frame_tag "edit-list" do %>
+            <button data-kanban-board-target="addListBtn" data-action="kanban-board#showListForm" class="add-list-btn"
+                draggable="false"
+                droppable="true"
+                id="list_board<%= board.id %>"
+                data-viewtype="list"
+                data-currpos="" 
+                data-prevpos="<%= position(lists.last) %>">
+              + Add another list
+            </button>
+            
+            <div class="hidden"
+                id="board<%= board.id %>-form-list"
+                data-kanban-board-target="formList"
+                draggable="false"
+                droppable="false">
+                <%= render partial: board_configs.form_list_partial, 
+                    locals: {
+                      board_configs.board_model_symbol => board, 
+                      board_configs.list_model_symbol => board_configs.list_model.new(board_configs.board_model_symbol => board)
+                    } 
+                %>
+            </div>
+          <% end %>
         <% end %>
     </div>
   </div>

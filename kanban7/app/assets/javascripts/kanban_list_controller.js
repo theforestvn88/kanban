@@ -11,4 +11,9 @@ export default class extends Controller {
         this.addCardBtnTarget.classList.add("hidden")
         this.formCardTarget.classList.remove("hidden")
     }
+
+    hideCardForm() {
+        this.addCardBtnTarget.classList.remove("hidden")
+        this.formCardTarget.classList.add("hidden")
+    }
 }

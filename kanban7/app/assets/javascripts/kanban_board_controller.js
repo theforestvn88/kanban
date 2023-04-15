@@ -14,6 +14,11 @@ export default class extends Controller {
         this.formListTarget.classList.remove("hidden")
     }
 
+    hideListForm() {
+        this.addListBtnTarget.classList.remove("hidden")
+        this.formListTarget.classList.add("hidden")
+    }
+
     // drag and drop
   
     dragStart(event) {

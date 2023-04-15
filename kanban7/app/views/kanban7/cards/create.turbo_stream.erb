@@ -1,6 +1,33 @@
+<% form_id = "list#{@list.id}-form-card" %>
 <% if @card.errors.any? %>
+    <%= turbo_stream.replace form_id do %>
+        <div id="<%= form_id %>" data-kanban-list-target="formCard" draggable="false" droppable="false" class="">
+            <%= render partial: @board_configs.form_card_partial, 
+                locals: {@board_configs.list_model_symbol => @list, @board_configs.card_model_symbol => @card} %>
+        </div>
+    <% end %>
 <% else %>
-    <%= turbo_stream.append "#{dom_id(@list)}_new_card" do %>
+    <%= turbo_stream.replace "edit-card" do %>
         <%= render "kanban7/cards/card", card: @card, prev: 0, board_configs: @board_configs %>
+
+        <%= turbo_frame_tag "edit-card" do %>
+            <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
+                draggable="false"
+                droppable="true"
+                id="card_list<%= @list.id %>"
+                data-viewtype="card"
+                data-currpos="<%= position(@cards) %>" 
+                data-prevpos="<%= position(@cards) - 1 %>"
+                data-parentid="<%= @list.id %>"
+                data-parenttype="<%= @board_configs.list_model_name %>"
+                class="add-card-btn">
+                + Add a card
+            </button>
+
+            <div id="<%= form_id %>" data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
+                <%= render partial: @board_configs.form_card_partial, 
+                    locals: {@board_configs.list_model_symbol => @list, @board_configs.card_model_symbol => @board_configs.card_model.new(@board_configs.list_model_symbol => @list)} %>
+            </div>
+        <% end %>
     <% end %>
 <% end %>

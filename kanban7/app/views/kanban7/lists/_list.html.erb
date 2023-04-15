@@ -17,24 +17,24 @@
                 <%= render "kanban7/cards/card", card: card, prev: position(cards[i-1], i-1), list_id: list.id, board_configs: board_configs  %>
             <% end %>
 
-            <%= turbo_frame_tag "#{dom_id(list)}_new_card" %>
-
-            <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
-                draggable="false"
-                droppable="true" 
-                id="card_list<%= list.id %>"
-                data-viewtype="card"
-                data-currpos="<%= position(cards.last) + 1 %>" 
-                data-prevpos="<%= position(cards.last) %>"
-                data-parentid="<%= list.id %>"
-                data-parenttype="<%= board_configs.list_model_name %>"
-                class="add-card-btn">
-                + Add a card
-            </button>
-            
-            <div data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
-                <%= render partial: board_configs.form_card_partial, locals: {board_configs.list_model_symbol => list, board_configs.card_model_symbol => board_configs.card_model.new(board_configs.list_model_symbol => list)} %>
-            </div>
+            <%= turbo_frame_tag "edit-card" do %>
+                <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
+                    draggable="false"
+                    droppable="true" 
+                    id="card_list<%= list.id %>"
+                    data-viewtype="card"
+                    data-currpos="<%= position(cards.last) + 1 %>" 
+                    data-prevpos="<%= position(cards.last) %>"
+                    data-parentid="<%= list.id %>"
+                    data-parenttype="<%= board_configs.list_model_name %>"
+                    class="add-card-btn">
+                    + Add a card
+                </button>
+                
+                <div id="list<%= list.id %>-form-card" data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
+                    <%= render partial: board_configs.form_card_partial, locals: {board_configs.list_model_symbol => list, board_configs.card_model_symbol => board_configs.card_model.new(board_configs.list_model_symbol => list)} %>
+                </div>
+            <% end %>
         </div>
     <% end %>
 </div>
