@@ -1,1 +1,3 @@
-<%= render partial: "kanban7/boards/board", locals: { board_configs: @board_configs, board: @board, lists: @lists } %>
+<%= turbo_frame_tag  @board_configs.kanban_frame do %>
+    <%= render partial: "kanban7/boards/board", locals: { board_configs: @board_configs, board: @board, lists: @lists } %>
+<% end %>
