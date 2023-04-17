@@ -9,7 +9,7 @@
 
     <div id="lists" class="lists">
         <% lists.each_with_index do |list, i| %>
-            <%= render "kanban7/lists/list", list: list, prev: position(lists[i-1], i-1), board: board, board_configs: board_configs  %>
+            <%= render "kanban7/lists/list", list: list, prev: position(lists[i-1], i-1), board: board, board_configs: board_configs %>
         <% end %>
 
         <% unless board_configs.is_fixed_lists? %>

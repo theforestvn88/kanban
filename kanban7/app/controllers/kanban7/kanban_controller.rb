@@ -14,7 +14,6 @@ module Kanban7
 
         before_action :set_configs
 
-
         private
 
             def set_configs

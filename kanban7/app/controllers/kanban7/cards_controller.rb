@@ -21,6 +21,14 @@ module Kanban7
             end
         end
 
+        def load_more
+            offset = params[:offset].to_i
+            limit = params[:limit].to_i
+            @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
+            @cards = fetch_cards(@list, params[:order] || :asc, offset, limit)
+            @next_offset = @cards.length < limit ? -1 : @cards.length
+        end
+
         private
 
             def card_params
