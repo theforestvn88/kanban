@@ -1,22 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = [ "addListBtn", "formList" ]
+    static targets = [ ]
     static values = { name: String }
 
     connect() {
         console.log(`${this.nameValue} Board Controller connected !!!`)
         this.root = document.documentElement;
-    }
-
-    showListForm() {
-        this.addListBtnTarget.classList.add("hidden")
-        this.formListTarget.classList.remove("hidden")
-    }
-
-    hideListForm() {
-        this.addListBtnTarget.classList.remove("hidden")
-        this.formListTarget.classList.add("hidden")
     }
 
     // drag and drop

@@ -17,11 +17,14 @@
 }
 
 .board .add-list-btn {
-  height: 3rem;
-  width: 18rem;
+  display: block;
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity))
 }
@@ -59,7 +62,7 @@
   bottom: 0px;
   left: 0px;
   right: 0px;
-  width: 18rem;
+  display: block;
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
   --tw-bg-opacity: 1;

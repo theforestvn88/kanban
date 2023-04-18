@@ -10,7 +10,7 @@
     }
 
     .board .add-list-btn {
-        @apply w-72 h-12 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
+        @apply block py-3 px-5 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
     }
 
     .list-header {
@@ -26,7 +26,7 @@
     }
 
     .list .add-card-btn {
-        @apply w-72 bg-slate-200 hover:border hover:border-slate-300 text-white text-left pl-2 py-4 rounded-b sticky bottom-0 left-0 right-0;
+        @apply block bg-slate-200 hover:border hover:border-slate-300 text-white text-left pl-2 py-4 rounded-b sticky bottom-0 left-0 right-0;
     }
 
     .card {
