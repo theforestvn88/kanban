@@ -10,39 +10,26 @@
         <%= render partial: board_configs.header_list_partial, locals: { board_configs.list_model_symbol => list } %>
     </div>
 
-    <%= turbo_frame_tag "#{dom_id(list)}_cards" do %>
-        <div class="list">
-            <% cards = fetch_cards(list, params[:order] || :asc, params[:offset], params[:limit]) %>
+    <div class="list">
+        <% cards = fetch_cards(list, params[:order] || :asc, params[:offset], params[:limit]) %>
+        <%= turbo_frame_tag "#{dom_id(list)}_cards" do %>
             <% cards.each_with_index do |card, i| %>
                 <%= render "kanban7/cards/card", card: card, prev: position(cards[i-1], i-1), list_id: list.id, board_configs: board_configs  %>
             <% end %>
+        <% end %>
 
-            <%= turbo_frame_tag "edit-card" do %>
-                <% if cards.length >= params[:limit].to_i %>
-                    <%= turbo_frame_tag "#{dom_id(list)}-load-more-cards", 
-                        src: send("#{board_configs.kanban_name}_kanban_load_#{board_configs.card_model_name}s_path", "#{board_configs.list_model_name}_id".to_sym => list.id, offset: cards.size, limit: params[:limit]), 
-                        loading: :lazy  do %>
-                        <%= render "kanban7/cards/skeleton_load" %>
-                    <% end %>
+        <%= turbo_frame_tag "#{dom_id(list)}-edit-card" do %>
+            <% if cards.length > 0 && cards.length >= params[:limit].to_i %>
+                <%= turbo_frame_tag "#{dom_id(list)}-load-more-cards", 
+                    src: Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_load_#{board_configs.card_model_name}s_path", "#{board_configs.list_model_name}_id".to_sym => list.id, offset: cards.size, limit: params[:limit]), 
+                    loading: :lazy  do %>
+                    <%= render "kanban7/cards/skeleton_load" %>
                 <% end %>
-
-                <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
-                    draggable="false"
-                    droppable="true" 
-                    id="card_list<%= list.id %>"
-                    data-viewtype="card"
-                    data-currpos="<%= position(cards.last) + 1 %>" 
-                    data-prevpos="<%= position(cards.last) %>"
-                    data-parentid="<%= list.id %>"
-                    data-parenttype="<%= board_configs.list_model_name %>"
-                    class="add-card-btn">
-                    + Add a card
-                </button>
-                
-                <div id="list<%= list.id %>-form-card" data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
-                    <%= render partial: board_configs.form_card_partial, locals: {board_configs.list_model_symbol => list, board_configs.card_model_symbol => board_configs.card_model.new(board_configs.list_model_symbol => list)} %>
-                </div>
             <% end %>
-        </div>
-    <% end %>
+
+            <%= link_to "+ Add a card", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", "#{board_configs.list_model_name}_id".to_sym => list.id), 
+                data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(cards.last) }, 
+                class: "add-card-btn", "draggable": "false", "droppable": true %>
+        <% end %>
+    </div>
 </div>

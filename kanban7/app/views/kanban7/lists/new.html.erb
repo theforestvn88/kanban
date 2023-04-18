@@ -1,0 +1,10 @@
+<%= render "kanban7/modal" do %>
+  <div class="mx-auto w-full">
+    <%= render partial: @board_configs.form_list_partial, 
+        locals: {
+            @board_configs.board_model_symbol => @board, 
+            @board_configs.list_model_symbol => @board_configs.list_model.new(@board_configs.board_model_symbol => @board)
+        } 
+    %>
+  </div>
+<% end %>

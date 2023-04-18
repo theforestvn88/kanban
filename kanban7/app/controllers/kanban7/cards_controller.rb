@@ -2,8 +2,12 @@
 
 module Kanban7
     class CardsController < KanbanController
+        before_action :get_list, only: [:new, :create, :load_more]
+
+        def new
+        end
+
         def create
-            @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
             @card = board_configs.card_model.new(card_params)
         
             respond_to do |format|
@@ -24,15 +28,18 @@ module Kanban7
         def load_more
             offset = params[:offset].to_i
             limit = params[:limit].to_i
-            @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
             @cards = fetch_cards(@list, params[:order] || :asc, offset, limit)
-            @next_offset = @cards.length < limit ? -1 : @cards.length
+            @next_offset = @cards.length == 0 || @cards.length < limit ? -1 : @cards.length
         end
 
         private
 
             def card_params
                 params.require(board_configs.card_model_name).permit(board_configs.card_model.columns.map(&:name))
+            end
+
+            def get_list
+                @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
             end
     end
 end

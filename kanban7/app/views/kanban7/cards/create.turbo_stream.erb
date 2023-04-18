@@ -7,27 +7,7 @@
         </div>
     <% end %>
 <% else %>
-    <%= turbo_stream.replace "edit-card" do %>
+    <%= turbo_stream.prepend "#{dom_id(@list)}_cards" do %>
         <%= render "kanban7/cards/card", card: @card, prev: 0, board_configs: @board_configs %>
-
-        <%= turbo_frame_tag "edit-card" do %>
-            <button data-kanban-list-target="addCardBtn" data-action="kanban-list#showCardForm" 
-                draggable="false"
-                droppable="true"
-                id="card_list<%= @list.id %>"
-                data-viewtype="card"
-                data-currpos="<%= position(@cards) %>" 
-                data-prevpos="<%= position(@cards) - 1 %>"
-                data-parentid="<%= @list.id %>"
-                data-parenttype="<%= @board_configs.list_model_name %>"
-                class="add-card-btn">
-                + Add a card
-            </button>
-
-            <div id="<%= form_id %>" data-kanban-list-target="formCard" draggable="false" droppable="false" class="hidden">
-                <%= render partial: @board_configs.form_card_partial, 
-                    locals: {@board_configs.list_model_symbol => @list, @board_configs.card_model_symbol => @board_configs.card_model.new(@board_configs.list_model_symbol => @list)} %>
-            </div>
-        <% end %>
     <% end %>
 <% end %>

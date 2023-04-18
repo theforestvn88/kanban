@@ -20,7 +20,6 @@
 <% end -%>
   <%%= form.hidden_field(:<%= @board_id %>) %>
   <div>
-    <span><a data-action="click->kanban-board#hideListForm" style="cursor: pointer; color: red;">close</a></span>
     <span style="color: blue;"><%%= form.submit "create" %></span>
   </div>
 <%% end %>
