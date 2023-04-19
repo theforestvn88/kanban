@@ -18,6 +18,11 @@
   </div>
 
 <% end -%>
+  <div>
+    <%%= label_tag "After Card: " %>
+    <%%= number_field_tag :after_card %>
+  </div>
+
   <%%= form.hidden_field(:<%= @list_id %>) %>
   <div>
     <span style="color: blue;"><%%= form.submit "create" %></span>

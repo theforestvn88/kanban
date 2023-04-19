@@ -7,7 +7,13 @@
         </div>
     <% end %>
 <% else %>
-    <%= turbo_stream.prepend "#{dom_id(@list)}_cards" do %>
-        <%= render "kanban7/cards/card", card: @card, prev: 0, board_configs: @board_configs %>
+    <% if @after_card %>
+        <%= turbo_stream.after "#{dom_id(@after_card)}" do %>
+            <%= render "kanban7/cards/card", card: @card, prev: @after_card.position, board_configs: @board_configs %>
+        <% end %>
+    <% else %>
+        <%= turbo_stream.append "#{dom_id(@list)}_cards" do %>
+            <%= render "kanban7/cards/card", card: @card, prev: 0, board_configs: @board_configs %>
+        <% end %>
     <% end %>
 <% end %>

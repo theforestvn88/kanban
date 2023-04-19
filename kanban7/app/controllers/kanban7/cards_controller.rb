@@ -9,6 +9,7 @@ module Kanban7
 
         def create
             @card = board_configs.card_model.new(card_params)
+            @card.position = after_card_position
         
             respond_to do |format|
               @card.save
@@ -40,6 +41,10 @@ module Kanban7
 
             def get_list
                 @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
+            end
+
+            def after_card_position
+                return @after_card.position if @after_card = board_configs.card_model.find_by(id: params[:after_card])
             end
     end
 end
