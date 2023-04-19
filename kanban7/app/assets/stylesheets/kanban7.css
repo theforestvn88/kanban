@@ -994,6 +994,32 @@ video {
   padding: 0.5rem
 }
 
+.card-item {
+  position: relative;
+  border-radius: 0.25rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding: 0.5rem
+}
+
+.card-item .card-edit {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: transparent
+}
+
+.card-item .card-edit:hover {
+  cursor: pointer;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity))
+}
+
 .card-gap {
   padding-top: 3.5rem !important
 }

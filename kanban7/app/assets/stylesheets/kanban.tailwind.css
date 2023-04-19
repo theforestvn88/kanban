@@ -33,6 +33,14 @@
         @apply bg-slate-200 p-2;
     }
 
+    .card-item {
+        @apply bg-white p-2 rounded relative;
+    }
+
+    .card-item .card-edit {
+        @apply absolute top-0 bottom-0 right-0 p-3 text-center text-sm text-transparent hover:text-gray-400 hover:cursor-pointer;
+    }
+
     .card-gap {
         @apply !pt-14;
     }

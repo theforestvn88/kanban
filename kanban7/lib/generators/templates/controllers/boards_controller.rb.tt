@@ -3,14 +3,14 @@
 class <%= @kanban_name.camelize %>KanbanController < Kanban7::BoardsController
     kanban "<%= @kanban_name %>" do
 <% if @fixed_lists %>        def self.fetch_<%= @cards_name %>(<%= @board_name %>, list, order, offset, limit)
-            <%= @card_model %>.where(<%= @board_name %>: <%= @board_name %>, <%= @list_name %>: list).order(Arel.sql("CASE WHEN position IS NULL THEN id ELSE position END")).offset(offset).limit(limit)
+            <%= @card_model %>.where(<%= @board_name %>: <%= @board_name %>, <%= @list_name %>: list).order(Arel.sql("CASE WHEN position IS NULL THEN id ELSE position END")).order(updated_at: :asc).offset(offset).limit(limit)
         end
 <% else %>        def self.fetch_<%= @lists_name %>(<%= @board_name %>, order, offset, limit)
              <%= @list_model %>.where(<%= @board_name %>: <%= @board_name %>).order(Arel.sql("CASE WHEN position IS NULL THEN id ELSE position END")).offset(offset).limit(limit)
         end
 
         def self.fetch_<%= @cards_name %>(<%= @lists_name %>, order, offset, limit)
-             <%= @card_model %>.where(<%= @list_name %>: <%= @lists_name %>).order(Arel.sql("CASE WHEN position IS NULL THEN id ELSE position END")).offset(offset).limit(limit)
+             <%= @card_model %>.where(<%= @list_name %>: <%= @lists_name %>).order(Arel.sql("CASE WHEN position IS NULL THEN id ELSE position END")).order(updated_at: :asc).offset(offset).limit(limit)
         end
 <% end %>
         # def self.board_policy(board)

@@ -1,4 +1,4 @@
-<%%= form_with(model: <%= @card_name %>, url: Rails.application.routes.url_helpers.<%= @kanban_name %>_kanban_create_<%= @card_name %>_path(<%= @list_id %>: <%= @list_name %>.id)) do |form| %>
+<%%= form_with(model: <%= @card_name %>, url: url) do |form| %>
   <%% if <%= @card_name %>.errors.any? %>
     <div style="color: red">
       <h2><%%= pluralize(<%= @card_name %>.errors.count, "error") %> prohibited this <%= @card_name %> from being saved:</h2>
@@ -25,6 +25,6 @@
 
   <%%= form.hidden_field(:<%= @list_id %>) %>
   <div>
-    <span style="color: blue;"><%%= form.submit "create" %></span>
+    <span style="color: blue;"><%%= form.submit %></span>
   </div>
 <%% end %>
