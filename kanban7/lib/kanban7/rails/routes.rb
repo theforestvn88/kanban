@@ -15,6 +15,7 @@ module ActionDispatch::Routing
                 post "/:name/#{list}s/:#{list}_id/#{card}s", to: 'cards#create', as: "#{name}_kanban_create_#{card}", :defaults => { :name => name }
                 get "/:name/#{card}s/:#{card}_id/edit", to: 'cards#edit', as: "#{name}_kanban_edit_#{card}", :defaults => { :name => name }
                 patch "/:name/#{card}s/:#{card}_id", to: 'cards#update', as: "#{name}_kanban_update_#{card}", :defaults => { :name => name }
+                delete "/:name/#{card}s/:#{card}_id", to: 'cards#destroy', as: "#{name}_kanban_delete_#{card}", :defaults => { :name => name }
             end
         end
     end

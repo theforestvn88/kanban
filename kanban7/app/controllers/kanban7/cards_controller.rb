@@ -3,7 +3,7 @@
 module Kanban7
     class CardsController < KanbanController
         before_action :get_list, only: [:new, :create, :load_more]
-        before_action :get_card, only: [:edit, :update]
+        before_action :get_card, only: [:edit, :update, :destroy]
 
         def new
         end
@@ -26,6 +26,13 @@ module Kanban7
                 update_params = card_params
                 update_params.merge!(position: card_position) unless card_params[:position].present? || card_position.nil?
                 @card.update(update_params)
+                format.turbo_stream
+            end
+        end
+
+        def destroy
+            @card.destroy
+            respond_to do |format|
                 format.turbo_stream
             end
         end
