@@ -62,7 +62,11 @@ export default class extends Controller {
             const dropBody = {}
             dropBody[`${dragObjectType}`] = {}
             if (parentId) dropBody[`${dragObjectType}`][`${parentType}_id`] = `${parentId}`
-            dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
+            if (currPos) {
+                dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
+            } else {
+                dropBody["prev_position"] = `${prevPos}`
+            }
             if (dropId) dropBody["next_view_id"] = `${dropId}`
 
             this.#sendDropApi(`/kanban7/${this.nameValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
@@ -109,7 +113,7 @@ export default class extends Controller {
         this.cloneDI.style.top = t + 'px'
     }
 
-    #findDropObject(mouseX, mouseY, viewType) {
+    #findDropObject(mouseX, mouseY) {
         let el = document.elementFromPoint(mouseX, mouseY)
         let droppable = el.getAttribute("droppable") 
         if (!droppable || droppable == "false") {

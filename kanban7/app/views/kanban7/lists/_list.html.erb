@@ -18,7 +18,7 @@
             <% end %>
         <% end %>
 
-        <%= turbo_frame_tag "#{dom_id(list)}-edit-card" do %>
+        <%= turbo_frame_tag "#{dom_id(list)}-card-footer" do %>
             <% if cards.length > 0 && cards.length >= params[:limit].to_i %>
                 <%= turbo_frame_tag "#{dom_id(list)}-load-more-cards", 
                     src: Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_load_#{board_configs.card_model_name}s_path", "#{board_configs.list_model_name}_id".to_sym => list.id, offset: cards.size, limit: params[:limit]), 
@@ -28,8 +28,9 @@
             <% end %>
 
             <%= link_to "+ Add a card", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", "#{board_configs.list_model_name}_id".to_sym => list.id), 
-                data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(cards.last) }, 
-                class: "add-card-btn", "draggable": "false", "droppable": true %>
+                id: "#{dom_id(list)}-add-card-btn",
+                data: { "turbo-frame": "kanban-modal", "viewtype": "card", "prevpos": position(cards.last), "parentid": list.id, "parenttype": board_configs.list_model_name }, 
+                class: "add-card-btn", "draggable": "false", "droppable": "true" %>
         <% end %>
     </div>
 </div>

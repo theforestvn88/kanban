@@ -63,7 +63,7 @@ module Kanban7
             end
 
             def after_card_position
-                after_card&.position
+                after_card&.position || params[:prev_position]
             end
 
             def card_position
@@ -71,7 +71,7 @@ module Kanban7
 
                 list_model_id_sym = "#{board_configs.list_model_name}_id".to_sym
                 next_after_card = board_configs.card_model.where(list_model_id_sym => @card.send(list_model_id_sym)).where("position > ?", after_card_position).first
-                next_after_card.nil? ? after_card.position + 1 : (after_card.position + next_after_card.position) / 2.0
+                next_after_card.nil? ? after_card_position.to_i + 1 : (after_card_position.to_i + next_after_card.position) / 2.0
             end
     end
 end
