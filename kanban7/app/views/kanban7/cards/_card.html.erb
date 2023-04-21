@@ -11,10 +11,10 @@
     data-parenttype="<%= board_configs.list_model_name %>">
   <div class="card-item">
     <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
-    <div class="card-action relative">
+    <div class="popup-action relative">
       <span class="font-bold" data-action="click->kanban-card#showOptions">...</span>
-      <div class="card-action-options hidden" data-kanban-card-target="options">
-        <div class="card-action-title">
+      <div class="popup-action-options hidden" data-kanban-card-target="options">
+        <div class="popup-action-title">
           <label>Card actions</label>
           <button data-action="click->kanban-card#hideOptions" class="font-bold text-lg">✗</button>
         </div>

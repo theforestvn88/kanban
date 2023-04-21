@@ -14,7 +14,7 @@
     }
 
     .list-header {
-        @apply bg-slate-200 rounded-t p-3 font-bold;
+        @apply block flex justify-between bg-slate-200 rounded-t p-3 font-bold relative;
     }
 
     .list {
@@ -37,23 +37,23 @@
         @apply flex justify-between bg-white p-2 rounded relative;
     }
 
-    .card-item .card-action {
-        @apply absolute top-0 bottom-0 right-0 p-3 text-center text-sm text-transparent hover:text-gray-400 hover:cursor-pointer;
+    .card-gap {
+        @apply !pt-14;
     }
 
-    .card-item .card-action .card-action-options {
+    .popup-action {
+        @apply absolute top-0 bottom-0 right-0 p-3 text-center text-sm text-gray-300 hover:text-gray-500 hover:cursor-pointer;
+    }
+
+    .popup-action .popup-action-options {
         @apply z-50 absolute top-3 right-0 w-32 bg-white border border-gray-200 drop-shadow-lg shadow-gray-500/50;
     }
 
-    .card-action-title {
+    .popup-action-options .popup-action-title {
         @apply block px-2 py-1 flex justify-between text-gray-500 border-b border-gray-400 hover:cursor-pointer;
     }
 
-    .card-action-options .action-option {
+    .popup-action-options .action-option {
         @apply block px-2 py-1 text-left text-gray-500 hover:bg-gray-300;
-    }
-
-    .card-gap {
-        @apply !pt-14;
     }
 }

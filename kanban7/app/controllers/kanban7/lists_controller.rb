@@ -3,6 +3,7 @@
 module Kanban7
     class ListsController < KanbanController
         before_action :get_board, only: [:new, :create]
+        before_action :get_list, only: [:edit, :update, :destroy]
 
         def new
         end
@@ -16,12 +17,25 @@ module Kanban7
             end
         end
 
-        def update
-            @list = board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
+        def edit
+        end
 
+        def update
             respond_to do |format|
               @list.update(list_params)
               format.turbo_stream
+            end
+        end
+
+        def destroy
+            ActiveRecord::Base.transaction do
+                board_configs.card_model.where("#{board_configs.list_model_name}_id".to_sym => @list.id).all.destroy_all
+                @list.destroy
+                respond_to do |format|
+                    format.turbo_stream
+                end
+            rescue => exception
+                # TODO:
             end
         end
 
@@ -33,6 +47,10 @@ module Kanban7
 
             def get_board
                 @board ||= board_configs.board_model.find(params["#{board_configs.board_model_name}_id"])
+            end
+
+            def get_list
+                @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
             end
     end
 end

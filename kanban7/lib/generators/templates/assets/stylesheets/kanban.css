@@ -36,6 +36,10 @@
 }
 
 .list-header {
+  position: relative;
+  display: block;
+  display: flex;
+  justify-content: space-between;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   --tw-bg-opacity: 1;
@@ -97,7 +101,11 @@
   padding: 0.5rem
 }
 
-.card-item .card-action {
+.card-gap {
+  padding-top: 3.5rem !important
+}
+
+.popup-action {
   position: absolute;
   top: 0px;
   bottom: 0px;
@@ -106,16 +114,17 @@
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: transparent
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity))
 }
 
-.card-item .card-action:hover {
+.popup-action:hover {
   cursor: pointer;
   --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity))
+  color: rgb(107 114 128 / var(--tw-text-opacity))
 }
 
-.card-item .card-action .card-action-options {
+.popup-action .popup-action-options {
   position: absolute;
   top: 0.75rem;
   right: 0px;
@@ -132,7 +141,7 @@
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
 }
 
-.card-action-title {
+.popup-action-options .popup-action-title {
   display: block;
   display: flex;
   justify-content: space-between;
@@ -147,11 +156,11 @@
   color: rgb(107 114 128 / var(--tw-text-opacity))
 }
 
-.card-action-title:hover {
+.popup-action-options .popup-action-title:hover {
   cursor: pointer
 }
 
-.card-action-options .action-option {
+.popup-action-options .action-option {
   display: block;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -162,11 +171,7 @@
   color: rgb(107 114 128 / var(--tw-text-opacity))
 }
 
-.card-action-options .action-option:hover {
+.popup-action-options .action-option:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity))
-}
-
-.card-gap {
-  padding-top: 3.5rem !important
 }

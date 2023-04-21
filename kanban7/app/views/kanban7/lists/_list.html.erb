@@ -8,6 +8,21 @@
 
     <div class="list-header" droppable="false">
         <%= render partial: board_configs.header_list_partial, locals: { board_configs.list_model_symbol => list } %>
+        <div class="popup-action relative">
+            <span class="font-bold" data-action="click->kanban-list#showOptions">...</span>
+            <div class="popup-action-options hidden" data-kanban-list-target="options">
+                <div class="popup-action-title">
+                <label>List actions</label>
+                <button data-action="click->kanban-list#hideOptions" class="font-bold text-lg">✗</button>
+                </div>
+                <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.list_model_name}_path", "#{board_configs.list_model_name}_id".to_sym => list.id), 
+                    data: { turbo_frame: "kanban-modal", action: "click->kanban-list#hideOptions" }, 
+                    class: "action-option" %>
+                <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.list_model_name}_path", "#{board_configs.list_model_name}_id".to_sym => list.id), 
+                    data: { turbo_method: :delete, turbo_confirm: 'Are you sure?', action: "click->kanban-list#hideOptions" },
+                    class: "action-option" %>
+            </div>
+        </div>
     </div>
 
     <div class="list">
