@@ -74,7 +74,11 @@ module Kanban7
         end
 
         def item_card_partial
-            @configs[:item_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/item"
+            @configs[:item_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/card"
+        end
+
+        def detail_card_partial
+            @configs[:detail_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/#{card_model_name}"
         end
       end
 end

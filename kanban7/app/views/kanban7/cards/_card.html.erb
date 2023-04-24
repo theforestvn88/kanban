@@ -10,7 +10,12 @@
     data-parentid="<%= card.send("#{board_configs.list_model_name}_id") %>"
     data-parenttype="<%= board_configs.list_model_name %>">
   <div class="card-item">
-    <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
+
+    <%= link_to Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_show_#{board_configs.card_model_name}_path", "#{board_configs.card_model_name}_id".to_sym => card.id),
+          data: { turbo_frame: "kanban-modal" }, draggable: "false", droppable: "false" do %>
+      <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
+    <% end %>
+
     <div class="popup-action relative">
       <span class="font-bold" data-action="click->kanban-card#showOptions">...</span>
       <div class="popup-action-options hidden" data-kanban-card-target="options">

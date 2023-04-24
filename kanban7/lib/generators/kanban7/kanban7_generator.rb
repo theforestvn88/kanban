@@ -86,7 +86,8 @@ module Generators
             template "views/boards/_header.html.erb", "app/views/#{name}_kanban/#{@boards_name}/_header.html.erb"
             template "views/lists/_header.html.erb", "app/views/#{name}_kanban/#{@lists_name}/_header.html.erb"
             template "views/lists/_form.html.erb", "app/views/#{name}_kanban/#{@lists_name}/_form.html.erb"
-            template "views/cards/_item.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_item.html.erb"
+            template "views/cards/_card.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_card.html.erb"
+            template "views/cards/_detail.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_#{@card_name}.html.erb"
             template "views/cards/_form.html.erb", "app/views/#{name}_kanban/#{@cards_name}/_form.html.erb"
 
 

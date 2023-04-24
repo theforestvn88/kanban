@@ -3,7 +3,10 @@
 module Kanban7
     class CardsController < KanbanController
         before_action :get_list, only: [:new, :create, :load_more]
-        before_action :get_card, only: [:edit, :update, :destroy]
+        before_action :get_card, only: [:show, :edit, :update, :destroy]
+
+        def show
+        end
 
         def new
         end
