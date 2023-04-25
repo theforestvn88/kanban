@@ -1,10 +1,15 @@
-<% form_id = "list#{@list.id}-form-card" %>
 <% if @card.errors.any? %>
-    <%= turbo_stream.replace form_id do %>
-        <div id="<%= form_id %>" data-kanban-list-target="formCard" draggable="false" droppable="false" class="">
-            <%= render partial: @board_configs.form_card_partial, 
-                locals: {@board_configs.list_model_symbol => @list, @board_configs.card_model_symbol => @card} %>
-        </div>
+    <%= turbo_stream.replace "kanban-modal" do %>
+        <%= render "kanban7/modal" do %>
+            <div class="mx-auto w-full">
+                    <%= render partial: @board_configs.form_card_partial, 
+                        locals: {
+                            @board_configs.card_model_symbol => @card,
+                            :url => Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_create_#{@board_configs.card_model_name}_path", @board_configs.list_model_id_symbol => @list.id)
+                        } 
+                    %>
+            </div>
+        <% end %>
     <% end %>
 <% else %>
     <% if @after_card %>

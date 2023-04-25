@@ -10,8 +10,8 @@ module Kanban7
     private
 
       def set_board
-        @board = board_configs.board_model.find(params["#{board_configs.board_model_name}_id"])
-        @lists = fetch_lists(@board, params[:order] || :asc, params[:offset], params[:limit])
+        @board = @board_configs.board_model.find(params["#{@board_configs.board_model_name}_id"])
+        @lists = fetch_lists(@board, params)
       end
   end
 end

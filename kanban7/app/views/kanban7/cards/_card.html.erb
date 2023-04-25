@@ -7,8 +7,8 @@
     data-currpos="<%= position(card) %>" 
     data-prevpos="<%= prev %>"
     data-viewtype="card"
-    data-parentid="<%= card.send("#{board_configs.list_model_name}_id") %>"
-    data-parenttype="<%= board_configs.list_model_name %>">
+    data-parentid="<%= card.send(board_configs.card_parent_id_symbol) %>"
+    data-parentkey="<%= board_configs.card_parent_id_symbol %>">
   <div class="card-item">
 
     <%= link_to Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_show_#{board_configs.card_model_name}_path", "#{board_configs.card_model_name}_id".to_sym => card.id),

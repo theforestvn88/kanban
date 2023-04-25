@@ -3,8 +3,7 @@
         <%= render partial: @board_configs.form_list_partial, 
             locals: {
                 @board_configs.list_model_symbol => @list, 
-                :url => Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_update_#{@board_configs.list_model_name}_path", 
-                          "#{@board_configs.list_model_name}_id".to_sym => @list.id)
+                :url => Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_update_#{@board_configs.list_model_name}_path", @board_configs.list_model_id_symbol => @list.id)
             } 
         %>
   </div>

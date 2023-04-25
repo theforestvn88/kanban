@@ -56,12 +56,12 @@ export default class extends Controller {
             const dropId = dropTarget.getAttribute("id")
             const currPos = parseFloat(dropTarget.getAttribute("data-currpos"))
             const prevPos = parseFloat(dropTarget.getAttribute("data-prevpos"))
-            const parentType = dropTarget.getAttribute("data-parenttype")
+            const parentKey = dropTarget.getAttribute("data-parentkey")
             const parentId = dropTarget.getAttribute("data-parentid")
 
             const dropBody = {}
             dropBody[`${dragObjectType}`] = {}
-            if (parentId) dropBody[`${dragObjectType}`][`${parentType}_id`] = `${parentId}`
+            if (parentId) dropBody[`${dragObjectType}`][`${parentKey}`] = `${parentId}`
             if (currPos) {
                 dropBody[`${dragObjectType}`]["position"] = `${(currPos + prevPos)/2}`
             } else {

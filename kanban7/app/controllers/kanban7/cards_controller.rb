@@ -9,10 +9,15 @@ module Kanban7
         end
 
         def new
+            if @board_configs.fixed_lists?
+                @card = @board_configs.card_model.new(@board_configs.list_model_symbol => @list.id)
+            else 
+                @card = @board_configs.card_model.new(@board_configs.list_model_symbol => @list)
+            end
         end
 
         def create
-            @card = board_configs.card_model.new(card_params)
+            @card = @board_configs.card_model.new(card_params)
             @card.position = card_position
         
             respond_to do |format|
@@ -41,28 +46,22 @@ module Kanban7
         end
 
         def load_more
-            offset = params[:offset].to_i
-            limit = params[:limit].to_i
-            @cards = fetch_cards(@list, params[:order] || :asc, offset, limit)
-            @next_offset = @cards.length == 0 || @cards.length < limit ? -1 : @cards.length
+            @cards = fetch_cards(@list, params)
+            @next_offset = @cards.length == 0 || @cards.length < params[:limit].to_i ? -1 : @cards.length
         end
 
         private
 
             def card_params
-                params.require(board_configs.card_model_name).permit(board_configs.card_model.columns.map(&:name))
-            end
-
-            def get_list
-                @list ||= board_configs.list_model.find(params["#{board_configs.list_model_name}_id"])
+                params.require(@board_configs.card_model_name).permit(@board_configs.card_model.columns.map(&:name))
             end
 
             def get_card
-                @card ||= board_configs.card_model.find(params["#{board_configs.card_model_name}_id"])
+                @card ||= @board_configs.card_model.find(params["#{@board_configs.card_model_name}_id"])
             end
 
             def after_card
-                @after_card ||= board_configs.card_model.find_by(id: params[:after_card])
+                @after_card ||= @board_configs.card_model.find_by(id: params[:after_card])
             end
 
             def after_card_position
@@ -70,10 +69,9 @@ module Kanban7
             end
 
             def card_position
-                return board_configs.card_model.count if after_card_position.nil?
+                return @board_configs.card_model.count if after_card_position.nil?
 
-                list_model_id_sym = "#{board_configs.list_model_name}_id".to_sym
-                next_after_card = board_configs.card_model.where(list_model_id_sym => @card.send(list_model_id_sym)).where("position > ?", after_card_position).first
+                next_after_card = @board_configs.card_model.where(@board_configs.card_parent_id_symbol => @card.send(@board_configs.card_parent_id_symbol)).where("position > ?", after_card_position).first
                 next_after_card.nil? ? after_card_position.to_i + 1 : (after_card_position.to_i + next_after_card.position) / 2.0
             end
     end

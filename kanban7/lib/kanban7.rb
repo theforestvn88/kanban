@@ -15,18 +15,22 @@ module Kanban7
   mattr_reader :board_configs
   @@board_configs = {}
 
-  def self.define_board(board_name, configs = {})
-    @@board_configs[board_name] = Kanban7::BoardConfigs.new(board_name, configs)
-    yield @@board_configs[board_name] if block_given?
+  def self.define_kanban(board_name, &block)
+    block.call define_kanban_configs(board_name)
   end
 
-  def self.fetch_board_configs(board_name)
+  def self.define_kanban_configs(board_name)
+    @@board_configs[board_name] = Kanban7::BoardConfigs.new(board_name)
+  end
+
+  def self.save_board_configs(board_name, board_configs)
+    @@board_configs[board_name] = board_configs
+  end
+
+  def self.fetch_board_configs(board_name, &block)
     return @@board_configs[board_name] if @@board_configs.has_key?(board_name)
 
-    define_board(board_name) do |board_configs|
-      yield board_configs
-    end
-
+    block&.call define_kanban_configs(board_name)
     @@board_configs[board_name]
   end
 end

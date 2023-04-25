@@ -14,7 +14,7 @@
             <%= render "kanban7/lists/list", list: list, prev: position(lists[i-1], i-1), board: board, board_configs: board_configs %>
         <% end %>
 
-        <% unless board_configs.is_fixed_lists? %>
+        <% unless board_configs.fixed_lists? %>
           <%= turbo_frame_tag "edit-list" do %>
             <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.list_model_name}_path", "#{board_configs.board_model_name}_id".to_sym => board.id), 
                 data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(lists.last) }, 

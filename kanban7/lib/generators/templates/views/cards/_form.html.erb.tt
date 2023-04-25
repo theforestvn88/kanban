@@ -22,8 +22,11 @@
     <%%= label_tag "After Card: " %>
     <%%= number_field_tag :after_card %>
   </div>
-
+  <% if @fixed_lists %>
+  <%%= form.hidden_field(:<%= @board_id %>) %>
+  <% else %>
   <%%= form.hidden_field(:<%= @list_id %>) %>
+  <% end %>
   <div>
     <span style="color: blue;"><%%= form.submit %></span>
   </div>
