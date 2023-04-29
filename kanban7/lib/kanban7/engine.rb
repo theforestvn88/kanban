@@ -1,5 +1,6 @@
 require 'kanban7/rails/routes'
 require 'kanban7/fixed_list'
+require 'kanban7/policy'
 require 'kanban7/board_configs'
 
 module Kanban7

@@ -70,14 +70,14 @@ export default class extends Controller {
             if (dropId) dropBody["next_view_id"] = `${dropId}`
 
             this.#sendDropApi(`/kanban7/${this.nameValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
-                .then (response => response.text())
                 .then(html => {
                     Turbo.renderStreamMessage(html)
                     this.cloneDI.remove()
                 })
                 .catch(error => {
-                    console.log(error)
+                    // console.log(error)
                     document.getElementById(`${dragObjectType}_${dragObjectId}`)?.classList?.remove("hidden")
+                    this.cloneDI.remove()
                 })
         }
 
@@ -136,6 +136,12 @@ export default class extends Controller {
                 'X-CSRF-Token': csrfToken,
             },
             body: JSON.stringify(body)
+        }).then (response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error(`Status: ${response.status}`)
+            }
         })
     }
 

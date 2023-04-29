@@ -4,6 +4,9 @@ module Kanban7
     class CardsController < KanbanController
         before_action :get_list, only: [:new, :create, :load_more]
         before_action :get_card, only: [:show, :edit, :update, :destroy]
+        before_action :check_add_card_policy, only: [:new, :create]
+        before_action :check_modify_card_policy, only: [:edit, :update, :destroy]
+        before_action :check_move_card_policy, only: [:update]
 
         def show
         end
@@ -73,6 +76,18 @@ module Kanban7
 
                 next_after_card = @board_configs.card_model.where(@board_configs.card_parent_id_symbol => @card.send(@board_configs.card_parent_id_symbol)).where("position > ?", after_card_position).first
                 next_after_card.nil? ? after_card_position.to_i + 1 : (after_card_position.to_i + next_after_card.position) / 2.0
+            end
+
+            def check_add_card_policy
+                head :bad_request unless @board_configs.can_add_card?(@list, current_user)
+            end
+
+            def check_modify_card_policy
+                head :bad_request unless @board_configs.can_modify_card?(@card, current_user)
+            end
+
+            def check_move_card_policy
+                head :bad_request unless @board_configs.can_move_card?(@card, current_user)
             end
     end
 end

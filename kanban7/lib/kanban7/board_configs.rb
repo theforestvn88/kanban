@@ -2,6 +2,14 @@
 
 module Kanban7
     class BoardConfigs
+        include Policy
+        user_policy :move_card
+        user_policy :modify_card
+        user_policy :add_card
+        user_policy :move_list
+        user_policy :modify_list
+        user_policy :add_list
+
         attr_reader :kanban_name
 
         def initialize(kanban_name)

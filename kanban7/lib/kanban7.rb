@@ -28,7 +28,7 @@ module Kanban7
   end
 
   def self.fetch_board_configs(board_name, &block)
-    return @@board_configs[board_name] if @@board_configs.has_key?(board_name)
+    return @@board_configs[board_name.to_s] if @@board_configs.has_key?(board_name.to_s)
 
     block&.call define_kanban_configs(board_name)
     @@board_configs[board_name]

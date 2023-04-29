@@ -1,6 +1,6 @@
 <div id=<%= dom_id(list) %> 
     data-controller="kanban-list"
-    draggable="true" 
+    draggable=<%= board_configs.can_move_list?(list, current_user) %>
     droppable="true"
     data-viewtype="list"
     data-currpos="<%= position(list) %>"
@@ -11,22 +11,24 @@
             <p><%= list.name %></p>
         <% else %>
             <%= render partial: board_configs.header_list_partial, locals: { board_configs.list_model_symbol => list } %>
-        
-            <div class="popup-action relative">
-                <span class="font-bold" data-action="click->kanban-list#showOptions">...</span>
-                <div class="popup-action-options hidden" data-kanban-list-target="options">
-                    <div class="popup-action-title">
-                    <label>List actions</label>
-                    <button data-action="click->kanban-list#hideOptions" class="font-bold text-lg">✗</button>
+
+            <% if board_configs.can_modify_list?(list, current_user) %>
+                <div class="popup-action relative">
+                    <span class="font-bold" data-action="click->kanban-list#showOptions">...</span>
+                    <div class="popup-action-options hidden" data-kanban-list-target="options">
+                        <div class="popup-action-title">
+                        <label>List actions</label>
+                        <button data-action="click->kanban-list#hideOptions" class="font-bold text-lg">✗</button>
+                        </div>
+                        <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.list_model_name}_path", board_configs.list_model_id_symbol => list.id), 
+                            data: { turbo_frame: "kanban-modal", action: "click->kanban-list#hideOptions" }, 
+                            class: "action-option" %>
+                        <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.list_model_name}_path", board_configs.list_model_id_symbol => list.id), 
+                            data: { turbo_method: :delete, turbo_confirm: 'Are you sure?', action: "click->kanban-list#hideOptions" },
+                            class: "action-option" %>
                     </div>
-                    <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.list_model_name}_path", board_configs.list_model_id_symbol => list.id), 
-                        data: { turbo_frame: "kanban-modal", action: "click->kanban-list#hideOptions" }, 
-                        class: "action-option" %>
-                    <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.list_model_name}_path", board_configs.list_model_id_symbol => list.id), 
-                        data: { turbo_method: :delete, turbo_confirm: 'Are you sure?', action: "click->kanban-list#hideOptions" },
-                        class: "action-option" %>
                 </div>
-            </div>
+            <% end %>
         <% end %>
     </div>
 
@@ -46,11 +48,13 @@
                     <%= render "kanban7/cards/skeleton_load" %>
                 <% end %>
             <% end %>
-
-            <%= link_to "+ Add a card", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", board_configs.list_model_id_symbol => list.id), 
-                id: "#{dom_id(list)}-add-card-btn",
-                data: { "turbo-frame": "kanban-modal", "viewtype": "card", "prevpos": position(cards.last), "parentid": list.id, "parentkey": board_configs.card_parent_id_symbol }, 
-                class: "add-card-btn", "draggable": "false", "droppable": "true" %>
+            
+            <% if board_configs.can_add_card?(list, current_user) %>
+                <%= link_to "+ Add a card", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", board_configs.list_model_id_symbol => list.id), 
+                    id: "#{dom_id(list)}-add-card-btn",
+                    data: { "turbo-frame": "kanban-modal", "viewtype": "card", "prevpos": position(cards.last), "parentid": list.id, "parentkey": board_configs.card_parent_id_symbol }, 
+                    class: "add-card-btn", "draggable": "false", "droppable": "true" %>
+            <% end %>
         <% end %>
     </div>
 </div>

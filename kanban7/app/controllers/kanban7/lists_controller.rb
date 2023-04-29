@@ -5,6 +5,9 @@ module Kanban7
         before_action :check_fixed_list
         before_action :get_board, only: [:new, :create]
         before_action :get_list, only: [:edit, :update, :destroy]
+        before_action :check_add_list_policy, only: [:new, :create]
+        before_action :check_modify_list_policy, only: [:edit, :update, :destroy]
+        before_action :check_move_list_policy, only: [:update]
 
         def new
         end
@@ -52,6 +55,18 @@ module Kanban7
 
             def check_fixed_list
                 head :bad_request if @board_configs.fixed_lists?
+            end
+
+            def check_add_list_policy
+                head :bad_request unless @board_configs.can_add_list?(@board, current_user)
+            end
+
+            def check_modify_list_policy
+                head :bad_request unless @board_configs.can_modify_list?(@list, current_user)
+            end
+
+            def check_move_list_policy
+                head :bad_request unless @board_configs.can_move_list?(@list, current_user)
             end
     end
 end

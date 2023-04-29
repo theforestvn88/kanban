@@ -5,5 +5,9 @@ class <%= @kanban_name.camelize %>KanbanController < Kanban7::BoardsController
         <% if @fixed_lists %>
         <%= @kanban_name %>_kanban.setup_fixed_lists [], as: "your card-model's list-column-name", save_attribute: :name
         <% end %>
+        # Add Policies
+        # <%= @kanban_name %>_kanban.include_move_card_policy :move_<%= @card_name %>_policy, ->(<%= @card_name %>, user) {
+        #   <%= @card_name %>.user_id == user.id
+        # }
     end
 end
