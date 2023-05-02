@@ -10,24 +10,39 @@ module Kanban7
         user_policy :modify_list
         user_policy :add_list
 
-        attr_reader :kanban_name
-
         def initialize(kanban_name)
-            @kanban_name = kanban_name
             @configs = {}
+            @configs[:kanban_name] = kanban_name
         end
 
-        def set_configs(configs)
+        def merge_configs(configs)
             configs&.assert_valid_keys(
                 :board_model, :header_board_partial,
                 :list_model, :fixed_lists, :form_list_partial, :header_list_partial, :update_list_path, 
-                :card_model, :form_card_partial, :item_card_partial, :update_card_path
+                :card_model, :form_card_partial, :item_card_partial, :update_card_path,
+                :live
             )
-            @configs = configs || {}
+            @configs.merge!(configs)
+        end
+
+        def configs_clone
+            @configs.clone
+        end
+
+        def kanban_name
+            @kanban_name ||= @configs[:kanban_name]
         end
 
         def kanban_frame
             "#{@kanban_name}-kanban"
+        end
+
+        def live?
+            @configs[:live]
+        end
+
+        def live=(live)
+            @configs[:live] = live
         end
 
         def board_model=(board)

@@ -1,1 +1,5 @@
-<%= turbo_stream.remove dom_id(@card) %>
+<% if @board_configs.live? %>
+    <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_frame, target: dom_id(@card)) %>
+<% else %>
+    <%= turbo_stream.remove dom_id(@card) %>
+<% end %>

@@ -2,6 +2,7 @@ require 'kanban7/rails/routes'
 require 'kanban7/fixed_list'
 require 'kanban7/policy'
 require 'kanban7/board_configs'
+require 'kanban7/board_configs_serializer'
 
 module Kanban7
   class Engine < ::Rails::Engine
@@ -19,6 +20,8 @@ module Kanban7
         ActiveSupport.on_load(:action_controller_base) do
           helper Kanban7::Engine.helpers
         end
+
+        Rails.application.config.active_job.custom_serializers << Kanban7::BoardConfigsSerializer
     end
   end
 end
