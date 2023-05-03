@@ -18,7 +18,7 @@
     }
 
     .list {
-        @apply h-176 w-72 overflow-x-hidden overflow-y-auto relative;
+        @apply h-auto w-72 max-h-176 bg-slate-200 overflow-x-hidden overflow-y-hidden relative;
     }
 
     .list-gap {

@@ -50,10 +50,13 @@
 
 .list {
   position: relative;
-  height: 44rem;
+  height: auto;
+  max-height: 44rem;
   width: 18rem;
-  overflow-y: auto;
-  overflow-x: hidden
+  overflow-x: hidden;
+  overflow-y: hidden;
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity))
 }
 
 .list-gap {

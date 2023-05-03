@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       height: {
         '176': '44rem'
+      },
+      maxHeight: {
+        '176': '44rem'
       }
     },
   },

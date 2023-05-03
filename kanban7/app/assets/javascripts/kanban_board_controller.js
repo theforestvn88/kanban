@@ -5,29 +5,26 @@ export default class extends Controller {
     static values = { name: String }
 
     connect() {
-        console.log(`${this.nameValue} Board Controller connected !!!`)
         this.root = document.documentElement;
     }
 
     // drag and drop
-  
+
     dragStart(event) {
-        console.log("DRAG START ....")
         const [dragObject, dragObjectId] = event.target.id.split("_")
         event.dataTransfer.setData("id", dragObjectId)
         event.dataTransfer.setData("type", dragObject)
         event.dataTransfer.effectAllowed = "move"
 
         this.#cloneDragItem(event.target, event.x, event.y)
-        event.target.classList.add("hidden")
+        this.#blurCardItem(event.target)
     }
 
     dragOver(event) {
-        console.log("DRAG OVER ....")
         this.#moveDragItem(event.x, event.y)
-        
+
         this.cloneDI.classList.add("hidden")
-        let dropEl = this.#findDropObject(event.x, event.y)
+        let dropEl = this.#findDropObject(event)
         if (dropEl) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle())
             this.preDropOverElement = dropEl
@@ -36,21 +33,19 @@ export default class extends Controller {
         this.cloneDI.classList.remove("hidden")
 
         event.preventDefault()
-        return true
+        return false
     }
 
     dragLeave(event) {}
 
-    dragEnter(event) {
-        event.preventDefault()
-    }
+    dragEnter(event) {}
 
     drop(event) {
         const dragObjectType = event.dataTransfer.getData("type")
         const dragObjectId = event.dataTransfer.getData("id")
 
         this.cloneDI.classList.add("hidden")
-        let dropTarget = this.#findDropObject(event.x, event.y)
+        let dropTarget = this.#findDropObject(event)
         if (dropTarget) {
             if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle())
             const dropId = dropTarget.getAttribute("id")
@@ -75,18 +70,16 @@ export default class extends Controller {
                     this.cloneDI.remove()
                 })
                 .catch(error => {
-                    // console.log(error)
-                    document.getElementById(`${dragObjectType}_${dragObjectId}`)?.classList?.remove("hidden")
-                    this.cloneDI.remove()
+                    this.#revert(document.getElementById(`${dragObjectType}_${dragObjectId}`))
                 })
+        } else {
+            this.#revert(document.getElementById(`${dragObjectType}_${dragObjectId}`))
         }
 
         event.preventDefault()
     }
 
-    dragEnd(event) {
-        console.log("DROP END ....")
-    }
+    dragEnd(event) {}
 
     // private
 
@@ -94,11 +87,12 @@ export default class extends Controller {
         var rect = dragItem.getBoundingClientRect();
         this.cloneDI = dragItem.cloneNode(true);
         this.cloneDI.setAttribute("droppable", "false")
+        this.cloneDI.setAttribute("draggable", "false")
         this.cloneDI.style["width"] = rect.width + 'px';
         this.cloneDI.style["height"] = rect.height + 'px';
         this.cloneDI.style["top"] = rect.top + 'px';
         this.cloneDI.style["left"] = rect.left + 'px';
-        this.cloneDI.classList.add("z-50", "fixed", "rotate-3")
+        this.cloneDI.classList.add("z-50", "fixed", "rotate-3", "pointer-events-none")
 
         this.cloneOffsetX = mouseX - rect.left;
         this.cloneOffsetY = mouseY - rect.top;
@@ -113,8 +107,8 @@ export default class extends Controller {
         this.cloneDI.style.top = t + 'px'
     }
 
-    #findDropObject(mouseX, mouseY) {
-        let el = document.elementFromPoint(mouseX, mouseY)
+    #findDropObject(event) {
+        let el = document.elementFromPoint(event.x, event.y)
         let droppable = el.getAttribute("droppable") 
         if (!droppable || droppable == "false") {
           el = el.closest(`[droppable='true']`)
@@ -147,5 +141,19 @@ export default class extends Controller {
 
     #paddingStyle() {
         return `${this.cloneDI.getAttribute("data-viewtype")}-gap` // card-gap list-gap
+    }
+
+    #blurCardItem(card) {
+        card?.classList?.add("opacity-0")
+    }
+
+    #restoreCardItem(card) {
+        card?.classList?.remove("opacity-0")
+    }
+
+    #revert(card) {
+        if (this.preDropOverElement) this.preDropOverElement.classList.remove(this.#paddingStyle())
+        this.#restoreCardItem(card)
+        this.cloneDI.remove()
     }
 }
