@@ -10,6 +10,14 @@ module Kanban7
         user_policy :modify_list
         user_policy :add_list
 
+        include RateLimiter
+        rate_limiter :move_card
+        rate_limiter :modify_card
+        rate_limiter :add_card
+        rate_limiter :move_list
+        rate_limiter :modify_list
+        rate_limiter :add_list
+
         def initialize(kanban_name)
             @configs = {}
             @configs[:kanban_name] = kanban_name

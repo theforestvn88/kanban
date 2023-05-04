@@ -2,8 +2,13 @@
 
 module Kanban7
     class CardsController < KanbanController
+        before_action :add_card_rate_limit!, only: [:new, :create]
+        before_action :move_card_rate_limit!, only: [:update]
+        before_action :modify_card_rate_limit!, only: [:edit, :update, :destroy]
+
         before_action :get_list, only: [:new, :create, :load_more]
         before_action :get_card, only: [:show, :edit, :update, :destroy]
+
         before_action :check_add_card_policy, only: [:new, :create]
         before_action :check_modify_card_policy, only: [:edit, :update, :destroy]
         before_action :check_move_card_policy, only: [:update]
@@ -88,6 +93,24 @@ module Kanban7
 
             def check_move_card_policy
                 head :bad_request unless @board_configs.can_move_card?(@card, current_user)
+            end
+
+            def add_card_rate_limit!
+                @board_configs.add_card_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
+            end
+
+            def move_card_rate_limit!
+                @board_configs.move_card_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
+            end
+
+            def modify_card_rate_limit!
+                @board_configs.modify_card_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
             end
     end
 end

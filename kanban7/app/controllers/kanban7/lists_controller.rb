@@ -2,9 +2,14 @@
 
 module Kanban7
     class ListsController < KanbanController
+        before_action :add_list_rate_limit!, only: [:new, :create]
+        before_action :move_list_rate_limit!, only: [:update]
+        before_action :modify_list_rate_limit!, only: [:edit, :update, :destroy]
+
         before_action :check_fixed_list
         before_action :get_board, only: [:new, :create]
         before_action :get_list, only: [:edit, :update, :destroy]
+
         before_action :check_add_list_policy, only: [:new, :create]
         before_action :check_modify_list_policy, only: [:edit, :update, :destroy]
         before_action :check_move_list_policy, only: [:update]
@@ -67,6 +72,24 @@ module Kanban7
 
             def check_move_list_policy
                 head :bad_request unless @board_configs.can_move_list?(@list, current_user)
+            end
+
+            def add_list_rate_limit!
+                @board_configs.add_list_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
+            end
+
+            def move_list_rate_limit!
+                @board_configs.move_list_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
+            end
+
+            def modify_list_rate_limit!
+                @board_configs.modify_list_rate_limit!(current_user, request.ip)
+            rescue Kanban7::RateLimiter::LimitExceeded => err
+                head :too_many_requests
             end
     end
 end

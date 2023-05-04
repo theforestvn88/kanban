@@ -9,5 +9,12 @@ class <%= @kanban_name.camelize %>KanbanController < Kanban7::BoardsController
         # <%= @kanban_name %>_kanban.include_move_card_policy :move_<%= @card_name %>_policy, ->(<%= @card_name %>, user) {
         #   <%= @card_name %>.user_id == user.id
         # }
+        
+        # Add Rate Limiter
+        # <%= @kanban_name %>_kanban.include_add_card_rate_limiter :limit_add_<%= @card_name %>_per_hour, ->(user, ip, count) {
+        #     return true if user.admin?
+        #     return false if count > ENV.fetch("LIMIT_PER_HOUR") { 1000 }
+        #     true
+        # }, expires_in: 1.hour
     end
 end
