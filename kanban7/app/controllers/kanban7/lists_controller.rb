@@ -7,7 +7,7 @@ module Kanban7
         before_action :modify_list_rate_limit!, only: [:edit, :update, :destroy]
 
         before_action :check_fixed_list
-        before_action :get_board, only: [:new, :create]
+        before_action :get_board
         before_action :get_list, only: [:edit, :update, :destroy]
 
         before_action :check_add_list_policy, only: [:new, :create]
@@ -52,10 +52,6 @@ module Kanban7
 
             def list_params
                 params.require(@board_configs.list_model_name).permit(@board_configs.list_model.columns.map(&:name))
-            end
-
-            def get_board
-                @board ||= @board_configs.board_model.find(params["#{@board_configs.board_model_name}_id"])
             end
 
             def check_fixed_list

@@ -18,13 +18,14 @@ module Kanban7
         rate_limiter :modify_list
         rate_limiter :add_list
 
-        def initialize(kanban_name)
-            @configs = {}
-            @configs[:kanban_name] = kanban_name
+        def initialize(kanban_name, configs = {})
+            @configs = configs
+            @configs[:kanban_name] = kanban_name.to_s
         end
 
         def merge_configs(configs)
             configs&.assert_valid_keys(
+                :kanban_name,
                 :board_model, :header_board_partial,
                 :list_model, :fixed_lists, :form_list_partial, :header_list_partial, :update_list_path, 
                 :card_model, :form_card_partial, :item_card_partial, :update_card_path,
@@ -33,8 +34,8 @@ module Kanban7
             @configs.merge!(configs)
         end
 
-        def configs_clone
-            @configs.clone
+        def configs_simplify
+            @configs.clone.extract!(:kanban_name, :board_model, :list_model, :card_model, :live)
         end
 
         def kanban_name
@@ -42,7 +43,7 @@ module Kanban7
         end
 
         def kanban_frame
-            "#{@kanban_name}-kanban"
+            @kanban_frame ||= "#{kanban_name}-kanban"
         end
 
         def live?
@@ -51,6 +52,10 @@ module Kanban7
 
         def live=(live)
             @configs[:live] = live
+        end
+
+        def kanban_live_frame(board)
+            "#{kanban_frame}-#{board.id}"
         end
 
         def board_model=(board)
@@ -69,8 +74,12 @@ module Kanban7
             board_model_name.to_sym
         end
 
+        def board_model_id_symbol
+            @board_model_id_symbol ||= "#{board_model_name}_id".to_sym
+        end
+
         def header_board_partial
-            @configs[:header_board_partial] || "#{@kanban_name}_kanban/#{board_model_name.pluralize}/header"
+            @configs[:header_board_partial] || "#{kanban_name}_kanban/#{board_model_name.pluralize}/header"
         end
 
         def list_model=(list)
@@ -129,11 +138,11 @@ module Kanban7
         end
 
         def form_list_partial
-            @configs[:form_list_partial] || "#{@kanban_name}_kanban/#{list_model_name.pluralize}/form"
+            @configs[:form_list_partial] || "#{kanban_name}_kanban/#{list_model_name.pluralize}/form"
         end
 
         def header_list_partial
-            @configs[:header_list_partial] || "#{@kanban_name}_kanban/#{list_model_name.pluralize}/header"
+            @configs[:header_list_partial] || "#{kanban_name}_kanban/#{list_model_name.pluralize}/header"
         end
 
         def card_model=(card)
@@ -152,6 +161,10 @@ module Kanban7
             card_model_name.to_sym
         end
 
+        def card_model_id_symbol
+            @card_model_id_symbol ||= "#{card_model_name}_id".to_sym
+        end
+
         def card_parent_id_symbol
             fixed_lists? ? list_model_symbol : list_model_id_symbol
         end
@@ -165,15 +178,15 @@ module Kanban7
         end
 
         def form_card_partial
-            @configs[:form_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/form"
+            @configs[:form_card_partial] || "#{kanban_name}_kanban/#{card_model_name.pluralize}/form"
         end
 
         def item_card_partial
-            @configs[:item_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/card"
+            @configs[:item_card_partial] || "#{kanban_name}_kanban/#{card_model_name.pluralize}/card"
         end
 
         def detail_card_partial
-            @configs[:detail_card_partial] || "#{@kanban_name}_kanban/#{card_model_name.pluralize}/#{card_model_name}"
+            @configs[:detail_card_partial] || "#{kanban_name}_kanban/#{card_model_name.pluralize}/#{card_model_name}"
         end
       end
 end

@@ -11,7 +11,7 @@
     data-parentkey="<%= board_configs.card_parent_id_symbol %>">
   <div class="card-item">
 
-    <%= link_to Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_show_#{board_configs.card_model_name}_path", "#{board_configs.card_model_name}_id".to_sym => card.id),
+    <%= link_to Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_show_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.card_model_id_symbol => card.id),
           data: { turbo_frame: "kanban-modal" }, draggable: "false", droppable: "false" do %>
       <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
     <% end %>
@@ -24,10 +24,10 @@
             <label>Card actions</label>
             <button data-action="click->kanban-card#hideOptions" class="font-bold text-lg">✗</button>
           </div>
-          <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.card_model_name}_path", "#{board_configs.card_model_name}_id".to_sym => card.id), 
+          <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, "#{board_configs.card_model_name}_id".to_sym => card.id), 
               data: { turbo_frame: "kanban-modal", action: "click->kanban-card#hideOptions" }, 
               class: "action-option" %>
-          <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.card_model_name}_path", "#{board_configs.card_model_name}_id".to_sym => card.id), 
+          <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, "#{board_configs.card_model_name}_id".to_sym => card.id), 
               data: { turbo_method: :delete, turbo_confirm: 'Are you sure?', action: "click->kanban-card#hideOptions" },
               class: "action-option" %>
         </div>

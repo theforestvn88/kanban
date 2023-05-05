@@ -6,6 +6,7 @@ module Kanban7
         before_action :move_card_rate_limit!, only: [:update]
         before_action :modify_card_rate_limit!, only: [:edit, :update, :destroy]
 
+        before_action :get_board
         before_action :get_list, only: [:new, :create, :load_more]
         before_action :get_card, only: [:show, :edit, :update, :destroy]
 
@@ -62,10 +63,6 @@ module Kanban7
 
             def card_params
                 params.require(@board_configs.card_model_name).permit(@board_configs.card_model.columns.map(&:name))
-            end
-
-            def get_card
-                @card ||= @board_configs.card_model.find(params["#{@board_configs.card_model_name}_id"])
             end
 
             def after_card

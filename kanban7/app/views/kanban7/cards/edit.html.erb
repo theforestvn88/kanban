@@ -5,7 +5,7 @@
                 @board_configs.list_model_symbol => @list, 
                 @board_configs.card_model_symbol => @card,
                 :url => Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_update_#{@board_configs.card_model_name}_path", 
-                          "#{@board_configs.card_model_name}_id".to_sym => @card.id)
+                        @board_configs.board_model_id_symbol => @board.id, @board_configs.card_model_id_symbol => @card.id)
             } 
         %>
   </div>

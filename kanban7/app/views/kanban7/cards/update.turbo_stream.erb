@@ -1,47 +1,47 @@
 <% if params[:next_view_id] %>
     <% prev_card = @board_configs.card_model.find_by(id: params[:next_view_id].split("_").last) %>
     <% if @board_configs.live? %>
-        <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_frame, target: dom_id(@card)) %>
+        <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_live_frame(@board), target: dom_id(@card)) %>
         <%  Turbo::StreamsChannel.broadcast_before_later_to(
-                @board_configs.kanban_frame,
+                @board_configs.kanban_live_frame(@board),
                 target: params[:next_view_id], 
                 partial: "kanban7/cards/card",
-                locals: {card: @card, prev: (prev_card&.position || prev_card&.id || 0), current_user: current_user, board_configs: @board_configs}) 
+                locals: { board: @board, card: @card, prev: (prev_card&.position || prev_card&.id || 0), current_user: current_user, board_configs: @board_configs }) 
         %>
     <% else %>
         <%= turbo_stream.remove dom_id(@card) %>
         <%= turbo_stream.before params[:next_view_id] do %>
-            <%= render "kanban7/cards/card", card: @card, prev: (prev_card&.position || prev_card&.id || 0), board_configs: @board_configs %>
+            <%= render "kanban7/cards/card", board: @board, card: @card, prev: (prev_card&.position || prev_card&.id || 0), board_configs: @board_configs %>
         <% end %>
     <% end %>
 
 <% else %>
     <% if @after_card %>
         <% if @board_configs.live? %>
-            <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_frame, target: dom_id(@card)) %>
+            <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_live_frame(@board), target: dom_id(@card)) %>
             <%  Turbo::StreamsChannel.broadcast_after_later_to(
-                @board_configs.kanban_frame,
+                @board_configs.kanban_live_frame(@board),
                 target: "#{dom_id(@after_card)}", 
                 partial: "kanban7/cards/card",
-                locals: {card: @card, prev: @after_card.position, current_user: current_user, board_configs: @board_configs}) 
+                locals: { board: @board, card: @card, prev: @after_card.position, current_user: current_user, board_configs: @board_configs }) 
             %>
         <% else %>
             <%= turbo_stream.remove dom_id(@card) %>
             <%= turbo_stream.after "#{dom_id(@after_card)}" do %>
-                <%= render "kanban7/cards/card", card: @card, prev: @after_card.position, board_configs: @board_configs %>
+                <%= render "kanban7/cards/card", board: @board, card: @card, prev: @after_card.position, board_configs: @board_configs %>
             <% end %>
         <% end %>
     <% else %>
         <% if @board_configs.live? %>
             <%  Turbo::StreamsChannel.broadcast_replace_later_to(
-                @board_configs.kanban_frame,
+                @board_configs.kanban_live_frame(@board),
                 target: dom_id(@card), 
                 partial: "kanban7/cards/card",
-                locals: {card: @card, prev: 0, current_user: current_user, board_configs: @board_configs}) 
+                locals: { board: @board, card: @card, prev: 0, current_user: current_user, board_configs: @board_configs }) 
             %>
         <% else %>
             <%= turbo_stream.replace dom_id(@card) do %>
-                <%= render "kanban7/cards/card", card: @card, prev: 0, board_configs: @board_configs %>
+                <%= render "kanban7/cards/card", board: @board, card: @card, prev: 0, board_configs: @board_configs %>
             <% end %>
         <% end %>
     <% end %>

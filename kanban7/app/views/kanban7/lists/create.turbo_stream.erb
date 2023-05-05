@@ -8,8 +8,8 @@
     <% end %>
 <% else %>
     <%= turbo_stream.replace "edit-list" do %>
-        <%= render "kanban7/lists/list", list: @list, prev: 0, board_configs: @board_configs %>
-        <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_new_#{@board_configs.list_model_name}_path", "#{@board_configs.board_model_name}_id".to_sym => @board.id), 
+        <%= render "kanban7/lists/list", board: @board, list: @list, prev: 0, board_configs: @board_configs %>
+        <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_new_#{@board_configs.list_model_name}_path", @board_configs.board_model_id_symbol => @board.id), 
             data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(@list) }, 
             class: "add-list-btn", "draggable": "false", "droppable": true %>
     <% end %>

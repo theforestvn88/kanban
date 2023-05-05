@@ -1,30 +1,32 @@
+<%# FIXME move list on client size, no need to reload the list %>
+
 <% if params[:next_view_id] %>
     <% prev_list = @board_configs.list_model.find_by(id: params[:next_view_id].split("_").last) %>
     <% if @board_configs.live? %>
-        <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_frame, target: dom_id(@list)) %>
+        <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_live_frame(@board), target: dom_id(@list)) %>
         <%  Turbo::StreamsChannel.broadcast_before_later_to(
-                @board_configs.kanban_frame,
+                @board_configs.kanban_live_frame(@board),
                 target: params[:next_view_id], 
                 partial: "kanban7/lists/list",
-                locals: {list: @list, prev: (prev_list&.position || prev_list&.id || 0), current_user: current_user, board_configs: @board_configs}) 
+                locals: { board: @board, list: @list, prev: (prev_list&.position || prev_list&.id || 0), current_user: current_user, board_configs: @board_configs }) 
         %>
     <% else %>
         <%= turbo_stream.remove dom_id(@list) %>
         <%= turbo_stream.before params[:next_view_id] do %>
-            <%= render "kanban7/lists/list", list: @list, prev: (prev_list&.position || prev_list&.id || 0), board_configs: @board_configs %>
+            <%= render "kanban7/lists/list", board: @board, list: @list, prev: (prev_list&.position || prev_list&.id || 0), board_configs: @board_configs %>
         <% end %>
     <% end %>
 <% else %>
     <% if @board_configs.live? %>
         <%  Turbo::StreamsChannel.broadcast_replace_later_to(
-            @board_configs.kanban_frame,
+            @board_configs.kanban_live_frame(@board),
             target: dom_id(@list), 
             partial: "kanban7/lists/list",
-            locals: {list: @list, prev: 0, current_user: current_user, board_configs: @board_configs}) 
+            locals: { board: @board, list: @list, prev: 0, current_user: current_user, board_configs: @board_configs }) 
         %>
     <% else %>
         <%= turbo_stream.replace dom_id(@list) do %>
-            <%= render "kanban7/lists/list", list: @list, prev: 0, board_configs: @board_configs %>
+            <%= render "kanban7/lists/list", board: @board, list: @list, prev: 0, board_configs: @board_configs %>
         <% end %>
     <% end %>
 <% end %>

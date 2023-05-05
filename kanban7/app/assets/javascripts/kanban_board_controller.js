@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [ ]
-    static values = { name: String }
+    static values = { kanban: String, board: String, boardid: Number }
 
     connect() {
         this.root = document.documentElement;
@@ -64,7 +64,7 @@ export default class extends Controller {
             }
             if (dropId) dropBody["next_view_id"] = `${dropId}`
 
-            this.#sendDropApi(`/kanban7/${this.nameValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
+            this.#sendDropApi(`/kanban7/${this.kanbanValue}/${this.boardValue}s/${this.boardidValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
                 .then(html => {
                     Turbo.renderStreamMessage(html)
                     this.cloneDI.remove()

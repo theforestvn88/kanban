@@ -1,23 +1,25 @@
 <div 
     data-controller="kanban-board"
-    data-kanban-board-name-value="<%= board_configs.kanban_name %>"
+    data-kanban-board-kanban-value="<%= board_configs.kanban_name %>"
+    data-kanban-board-board-value="<%= board_configs.board_model_name %>"
+    data-kanban-board-boardid-value="<%= board.id %>"
     data-action="dragstart->kanban-board#dragStart dragover->kanban-board#dragOver dragleave->kanban-board#dragLeave dragenter->kanban-board#dragEnter drop->kanban-board#drop dragEnd->kanban-board#dragEnd"
     class="board">
   <div class="p-14 mt-16">
     
     <%= turbo_frame_tag "kanban-modal" %>
 
-    <% render partial: board_configs.header_board_partial, locals: {board_configs.board_model_symbol => board} %>
+    <% render partial: board_configs.header_board_partial, locals: { board_configs.board_model_symbol => board } %>
 
     <div id="lists" class="lists">
         <% lists.each_with_index do |list, i| %>
-            <%= render "kanban7/lists/list", list: list, prev: position(lists[i-1], i-1), board: board, board_configs: board_configs %>
+            <%= render "kanban7/lists/list", board: board, list: list, prev: position(lists[i-1], i-1), board_configs: board_configs %>
         <% end %>
 
         <% unless board_configs.fixed_lists? %>
           <%= turbo_frame_tag "edit-list" do %>
             <% if board_configs.can_add_list?(board, current_user) %>
-              <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.list_model_name}_path", "#{board_configs.board_model_name}_id".to_sym => board.id), 
+              <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id), 
                   data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(lists.last) }, 
                   class: "add-list-btn", "draggable": "false", "droppable": true %>
             <% end %>

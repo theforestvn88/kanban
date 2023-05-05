@@ -1,6 +1,6 @@
 <%= turbo_frame_tag  @board_configs.kanban_frame do %>
     <% if @board_configs.live? %>
-        <%= turbo_stream_from @board_configs.kanban_frame %>
+        <%= turbo_stream_from @board_configs.kanban_live_frame(@board) %>
     <% end %>
     <%= render partial: "kanban7/boards/board", locals: { board_configs: @board_configs, board: @board, lists: @lists } %>
 <% end %>

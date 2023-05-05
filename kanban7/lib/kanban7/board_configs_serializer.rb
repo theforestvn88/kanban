@@ -7,11 +7,11 @@ module Kanban7
         end
 
         def serialize(board_configs)
-            super(board_configs.configs_clone)
+            super(board_configs.configs_simplify)
         end
 
         def deserialize(hash)
-            Kanban7::BoardConfigs.new(hash[:kanban_name]).tap { |board_configs| board_configs.merge_configs(hash) }
+            Kanban7::BoardConfigs.new(hash[:kanban_name], hash)
         end
     end
 end
