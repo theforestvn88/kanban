@@ -2,6 +2,8 @@
 
 module Kanban7
     class BoardConfigs
+        include Fetcher
+
         include Policy
         user_policy :move_card
         user_policy :modify_card
@@ -35,7 +37,7 @@ module Kanban7
         end
 
         def configs_simplify
-            @configs.clone.extract!(:kanban_name, :board_model, :list_model, :card_model, :live)
+            @configs.clone.extract!(:kanban_name, :board_model, :list_model, :card_model, :live, :fetch_cards)
         end
 
         def kanban_name
@@ -102,14 +104,6 @@ module Kanban7
             @list_model_id_symbol ||= "#{list_model_name}_id".to_sym
         end
 
-        def fetch_lists=(fetch_lists_lambda)
-            @configs[:fetch_lists_lambda] = fetch_lists_lambda
-        end
-
-        def fetch_lists
-            @configs[:fetch_lists_lambda]
-        end
-
         def setup_fixed_lists(list, as:, save_attribute: :name)
             raise ArgumentError, "Please set up the fixed list" if list.empty?
             
@@ -167,14 +161,6 @@ module Kanban7
 
         def card_parent_id_symbol
             fixed_lists? ? list_model_symbol : list_model_id_symbol
-        end
-
-        def fetch_cards=(fetch_cards_lambda)
-            @configs[:fetch_cards_lambda] = fetch_cards_lambda
-        end
-
-        def fetch_cards
-            @configs[:fetch_cards_lambda]
         end
 
         def form_card_partial

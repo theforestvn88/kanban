@@ -55,7 +55,7 @@ module Kanban7
         end
 
         def load_more
-            @cards = fetch_cards(@list, params)
+            @cards = @board_configs.fetch_cards.call(@list, params)
             @next_offset = @cards.length == 0 || @cards.length < params[:limit].to_i ? -1 : @cards.length
         end
 

@@ -33,10 +33,10 @@
     </div>
 
     <div class="list">
-        <% cards = fetch_cards(list, params) %>
+        <% cards = board_configs.fetch_cards.call(list, params) %>
         <%= turbo_frame_tag "#{dom_id(list)}_cards" do %>
             <% cards.each_with_index do |card, i| %>
-                <%= render "kanban7/cards/card", board: board, list_id: list.id, card: card, prev: position(cards[i-1], i-1), board_configs: board_configs  %>
+                <%= render "kanban7/cards/card", board: board, list_id: list.id, card: card, prev: position(cards[i-1], i-1), current_user: current_user, board_configs: board_configs  %>
             <% end %>
         <% end %>
 

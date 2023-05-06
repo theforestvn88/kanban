@@ -5,7 +5,7 @@
 
     <% if @next_offset >= 0 %>
         <%= turbo_frame_tag "#{dom_id(@list)}-load-more-cards", 
-            src: Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_load_#{@board_configs.card_model_name}s_path",@ board_configs.board_model_id_symbol => @board.id, @board_configs.list_model_id_symbol => @list.id, offset: @next_offset, limit: params[:limit]), 
+            src: Rails.application.routes.url_helpers.send("#{@board_configs.kanban_name}_kanban_load_#{@board_configs.card_model_name}s_path", @board_configs.board_model_id_symbol => @board.id, @board_configs.list_model_id_symbol => @list.id, offset: @next_offset, limit: params[:limit]), 
             loading: :lazy  do %>
             <%= render "kanban7/cards/skeleton_load" %>
         <% end %>

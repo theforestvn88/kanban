@@ -2,6 +2,7 @@ require 'kanban7/rails/routes'
 require 'kanban7/fixed_list'
 require 'kanban7/policy'
 require 'kanban7/rate_limiter'
+require 'kanban7/fetcher'
 require 'kanban7/board_configs'
 require 'kanban7/board_configs_serializer'
 

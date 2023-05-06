@@ -1,5 +1,3 @@
-<%# FIXME move list on client size, no need to reload the list %>
-
 <% if params[:next_view_id] %>
     <% prev_list = @board_configs.list_model.find_by(id: params[:next_view_id].split("_").last) %>
     <% if @board_configs.live? %>

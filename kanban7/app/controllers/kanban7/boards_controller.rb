@@ -11,7 +11,7 @@ module Kanban7
 
       def set_board
         @board = @board_configs.board_model.find(params["#{@board_configs.board_model_name}_id"])
-        @lists = fetch_lists(@board, params)
+        @lists = @board_configs.fetch_lists.call(@board, params)
       end
   end
 end

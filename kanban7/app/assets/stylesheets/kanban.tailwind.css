@@ -10,7 +10,7 @@
     }
 
     .board .add-list-btn {
-        @apply block py-3 px-5 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
+        @apply block h-10 py-2 px-5 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
     }
 
     .list-header {
@@ -18,7 +18,7 @@
     }
 
     .list {
-        @apply h-auto w-72 max-h-176 bg-slate-200 overflow-x-hidden overflow-y-hidden relative;
+        @apply h-auto w-72 max-h-176 bg-slate-200 overflow-x-hidden relative;
     }
 
     .list-gap {
