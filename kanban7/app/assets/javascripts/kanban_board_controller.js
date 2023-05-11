@@ -18,6 +18,7 @@ export default class extends Controller {
 
         this.#cloneDragItem(event.target, event.x, event.y)
         this.#blurCardItem(event.target)
+        this.#disDroppableCardItem(event.target)
     }
 
     dragOver(event) {
@@ -143,12 +144,17 @@ export default class extends Controller {
         return `${this.cloneDI.getAttribute("data-viewtype")}-gap` // card-gap list-gap
     }
 
+    #disDroppableCardItem(card) {
+        card?.setAttribute("droppable", "false")
+    }
+
     #blurCardItem(card) {
         card?.classList?.add("opacity-0")
     }
 
     #restoreCardItem(card) {
         card?.classList?.remove("opacity-0")
+        card?.setAttribute("droppable", "true")
     }
 
     #revert(card) {
