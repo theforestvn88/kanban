@@ -6,7 +6,8 @@
     data-action="dragstart->kanban-board#dragStart dragover->kanban-board#dragOver dragleave->kanban-board#dragLeave dragenter->kanban-board#dragEnter drop->kanban-board#drop dragEnd->kanban-board#dragEnd"
     class="board">
   <div class="p-14 mt-16">
-    
+  
+    <%= turbo_frame_tag "kanban-flash" %>
     <%= turbo_frame_tag "kanban-modal" %>
 
     <% render partial: board_configs.header_board_partial, locals: { board_configs.board_model_symbol => board } %>

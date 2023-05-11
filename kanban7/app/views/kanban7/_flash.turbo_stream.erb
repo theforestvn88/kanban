@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "kanban-flash" do %>
+    <div id="flash" class="fixed top-0 -right-5 z-50 shadow-xl drop-shadow-2xl border-y-2 border-l-2 border-gray-300 hover:cursor-pointer"
+        data-controller="kanban-flash" 
+        data-action="click->kanban-flash#close"
+        data-kanban-flash-target="flash">
+            <%= turbo_frame_tag "flash-view" do %>
+                <%= yield %>
+            <% end %>
+    </div>
+<% end %>
