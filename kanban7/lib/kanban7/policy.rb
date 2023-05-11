@@ -14,7 +14,6 @@ module Kanban7::Policy
                 end
             
                 def can_#{name}?(target_object, #{policy_object})
-                    return true if #{policy_object}.nil?
                     #{name}_policies.all? { |name, policy| policy.call(target_object, #{policy_object}) }
                 end
             METHODS

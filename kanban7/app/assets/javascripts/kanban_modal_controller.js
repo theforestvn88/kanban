@@ -17,9 +17,7 @@ export default class extends Controller {
     }
 
     afterSubmit = (e) => {
-        if (e.detail.success) {
-            this.close();
-        }
+        this.close();
     }
 
     handleKeyup(e) {

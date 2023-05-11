@@ -55,7 +55,8 @@ export default class extends Controller {
             const parentKey = dropTarget.getAttribute("data-parentkey")
             const parentId = dropTarget.getAttribute("data-parentid")
 
-            const dropBody = {}
+            const dropBody = { }
+            dropBody["user-action"] = "move"
             dropBody[`${dragObjectType}`] = {}
             if (parentId) dropBody[`${dragObjectType}`][`${parentKey}`] = `${parentId}`
             if (currPos) {
@@ -71,6 +72,11 @@ export default class extends Controller {
                     this.cloneDI.remove()
                 })
                 .catch(error => {
+                    error.then(html => {
+                        console.log(html)
+                        Turbo.renderStreamMessage(html)
+                    })
+                    
                     this.#revert(document.getElementById(`${dragObjectType}_${dragObjectId}`))
                 })
         } else {
@@ -133,9 +139,9 @@ export default class extends Controller {
             body: JSON.stringify(body)
         }).then (response => {
             if (response.ok) {
-                return response.text();
+                return response.text()
             } else {
-                throw new Error(`Status: ${response.status}`)
+                throw response.text()
             }
         })
     }
