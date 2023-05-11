@@ -81,33 +81,33 @@ module Kanban7
             end
 
             def check_add_card_policy
-                head :bad_request unless @board_configs.can_add_card?(@list, current_user)
+                flash_error "You're not allowed to add new card !", status: :bad_request unless @board_configs.can_add_card?(@list, current_user)
             end
 
             def check_modify_card_policy
-                head :bad_request unless @board_configs.can_modify_card?(@card, current_user)
+                flash_error "You're not allowed to modify this card !", status: :bad_request unless @board_configs.can_modify_card?(@card, current_user)
             end
-
+            # FIXME: detect when :move when :update
             def check_move_card_policy
-                head :bad_request unless @board_configs.can_move_card?(@card, current_user)
+                flash_error "You're not allowed to move this card !", status: :bad_request unless @board_configs.can_move_card?(@card, current_user)
             end
 
             def add_card_rate_limit!
                 @board_configs.add_card_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
 
             def move_card_rate_limit!
                 @board_configs.move_card_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
 
             def modify_card_rate_limit!
                 @board_configs.modify_card_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
     end
 end

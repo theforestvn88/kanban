@@ -59,33 +59,33 @@ module Kanban7
             end
 
             def check_add_list_policy
-                head :bad_request unless @board_configs.can_add_list?(@board, current_user)
+                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_add_list?(@board, current_user)
             end
 
             def check_modify_list_policy
-                head :bad_request unless @board_configs.can_modify_list?(@list, current_user)
+                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_modify_list?(@list, current_user)
             end
 
             def check_move_list_policy
-                head :bad_request unless @board_configs.can_move_list?(@list, current_user)
+                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_move_list?(@list, current_user)
             end
 
             def add_list_rate_limit!
                 @board_configs.add_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
 
             def move_list_rate_limit!
                 @board_configs.move_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
 
             def modify_list_rate_limit!
                 @board_configs.modify_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                head :too_many_requests
+                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
             end
     end
 end
