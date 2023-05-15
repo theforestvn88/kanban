@@ -1,3 +1,4 @@
+<% cache card, expires_in: 1.minute do %>
 <div
     class="card" 
     draggable=<%= board_configs.can_move_card?(card, current_user) %>
@@ -10,7 +11,6 @@
     data-parentid="<%= card.send(board_configs.card_parent_id_symbol) %>"
     data-parentkey="<%= board_configs.card_parent_id_symbol %>">
   <div class="card-item">
-
     <%= link_to Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_show_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.card_model_id_symbol => card.id),
           data: { turbo_frame: "kanban-modal" }, draggable: "false", droppable: "false" do %>
       <%= render partial: board_configs.item_card_partial, locals: { board_configs.card_model_symbol => card } %>
@@ -35,3 +35,4 @@
     <% end %>
   </div>
 </div>
+<% end %>

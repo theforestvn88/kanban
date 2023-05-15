@@ -68,6 +68,7 @@ export default class extends Controller {
 
             this.#sendDropApi(`/kanban7/${this.kanbanValue}/${this.boardValue}s/${this.boardidValue}/${dragObjectType}s/${dragObjectId}`, dropBody)
                 .then(html => {
+                    this.#revert(document.getElementById(`${dragObjectType}_${dragObjectId}`))    
                     Turbo.renderStreamMessage(html)
                     this.cloneDI.remove()
                 })

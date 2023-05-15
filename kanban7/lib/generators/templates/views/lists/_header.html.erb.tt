@@ -1,1 +1,3 @@
-<p><%= @list_model.name %> <%%= <%= @list_name %>.id %></p>
+<div id="<%%= dom_id(<%= @list_name %>) %>-header" droppable="false" draggable="false">
+    <p><%= @list_model.name %> <%%= <%= @list_name %>.id %></p>
+</div>

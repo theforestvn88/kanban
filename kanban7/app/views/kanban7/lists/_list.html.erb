@@ -10,6 +10,7 @@
         <% if board_configs.fixed_lists? %>
             <p><%= list.name %></p>
         <% else %>
+            
             <%= render partial: board_configs.header_list_partial, locals: { board_configs.list_model_symbol => list } %>
 
             <% if board_configs.can_modify_list?(list, current_user) %>

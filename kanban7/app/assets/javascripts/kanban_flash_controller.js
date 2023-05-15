@@ -16,6 +16,7 @@ export default class extends Controller {
     close() {
         this.flashTarget.parentElement.removeAttribute("src")
         this.flashTarget.remove()
+        this.element.remove()
     }
 
     handleKeyup(e) {
