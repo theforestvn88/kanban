@@ -20,7 +20,7 @@
         <% unless board_configs.fixed_lists? %>
           <%= turbo_frame_tag "#{dom_id(board)}_edit_list" do %>
             <% if board_configs.can_add_list?(board, current_user) %>
-              <%= link_to "+ Add another list", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id), 
+              <%= link_to t('kanban7.action.add_a_list'), Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id), 
                   data: { "turbo-frame": "kanban-modal", "viewtype": "list", "prevpos": position(lists.last) }, 
                   class: "add-list-btn", "draggable": "false", "droppable": true %>
             <% end %>

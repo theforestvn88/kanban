@@ -59,37 +59,37 @@ module Kanban7
             end
 
             def check_add_list_policy
-                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_add_list?(@board, current_user)
+                flash_error ::I18n.t('kanban7.error.not_allow_add_list'), status: :bad_request unless @board_configs.can_add_list?(@board, current_user)
             end
 
             def check_modify_list_policy
                 return if user_action_move?
-                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_modify_list?(@list, current_user)
+                flash_error ::I18n.t('kanban7.error.not_allow_modify_list'), status: :bad_request unless @board_configs.can_modify_list?(@list, current_user)
             end
 
             def check_move_list_policy
                 return unless user_action_move?
-                flash_error "You're not allowed to add new list !", status: :bad_request unless @board_configs.can_move_list?(@list, current_user)
+                flash_error ::I18n.t('kanban7.error.not_allow_move_list'), status: :bad_request unless @board_configs.can_move_list?(@list, current_user)
             end
 
             def add_list_rate_limit!
                 @board_configs.add_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
+                flash_error ::I18n.t('kanban7.error.rate_limit_exceeded'), status: :too_many_requests
             end
 
             def move_list_rate_limit!
                 return unless user_action_move?
                 @board_configs.move_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
+                flash_error ::I18n.t('kanban7.error.rate_limit_exceeded'), status: :too_many_requests
             end
 
             def modify_list_rate_limit!
                 return if user_action_move?
                 @board_configs.modify_list_rate_limit!(current_user, request.ip)
             rescue Kanban7::RateLimiter::LimitExceeded => err
-                flash_error "Too Many Requests !!! Please wait for a moment ...", status: :too_many_requests
+                flash_error ::I18n.t('kanban7.error.rate_limit_exceeded'), status: :too_many_requests
             end
     end
 end

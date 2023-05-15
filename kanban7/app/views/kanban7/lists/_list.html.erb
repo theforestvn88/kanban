@@ -17,13 +17,13 @@
                     <span class="font-bold" data-action="click->kanban-list#showOptions">...</span>
                     <div class="popup-action-options hidden" data-kanban-list-target="options">
                         <div class="popup-action-title">
-                        <label>List actions</label>
+                        <label><%= t('kanban7.label_list_actions') %></label>
                         <button data-action="click->kanban-list#hideOptions" class="font-bold text-lg">✗</button>
                         </div>
-                        <%= link_to "Edit", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
+                        <%= link_to t('kanban7.action.edit'), Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_edit_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
                             data: { turbo_frame: "kanban-modal", action: "click->kanban-list#hideOptions" }, 
                             class: "action-option" %>
-                        <%= link_to "Delete", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
+                        <%= link_to t('kanban7.action.delete'), Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_delete_#{board_configs.list_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
                             data: { turbo_method: :delete, turbo_confirm: 'Are you sure?', action: "click->kanban-list#hideOptions" },
                             class: "action-option" %>
                     </div>
@@ -50,7 +50,7 @@
             <% end %>
             
             <% if board_configs.can_add_card?(list, current_user) %>
-                <%= link_to "+ Add a card", Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
+                <%= link_to t('kanban7.action.add_a_card'), Rails.application.routes.url_helpers.send("#{board_configs.kanban_name}_kanban_new_#{board_configs.card_model_name}_path", board_configs.board_model_id_symbol => board.id, board_configs.list_model_id_symbol => list.id), 
                     id: "#{dom_id(list)}-add-card-btn",
                     data: { "turbo-frame": "kanban-modal", "viewtype": "card", "prevpos": position(cards.last), "parentid": list.id, "parentkey": board_configs.card_parent_id_symbol }, 
                     class: "add-card-btn", "draggable": "false", "droppable": "true" %>
