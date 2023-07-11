@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "generators/kanban7/install_generator"
 
 class InstallGeneratorTest < Rails::Generators::TestCase
     tests Kanban7::Generators::InstallGenerator

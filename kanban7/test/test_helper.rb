@@ -14,6 +14,10 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixtures :all
 end
 
+# 
+require 'capybara/rails'
+require 'capybara/minitest'
 
-# For generators
-require "generators/kanban7/install_generator"
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :firefox
+end

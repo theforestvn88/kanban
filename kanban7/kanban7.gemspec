@@ -25,4 +25,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 7.0.4.2"
 
   spec.add_development_dependency "tailwindcss-rails", "2.0.10"
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'capybara', ">= 3.26"
+  spec.add_development_dependency 'selenium-webdriver', "4.8.0"
+  spec.add_development_dependency 'webdrivers', ">= 5.0.0"
+
 end
