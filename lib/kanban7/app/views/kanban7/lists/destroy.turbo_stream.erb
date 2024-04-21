@@ -1,0 +1,5 @@
+<% if @board_configs.live? %>
+    <%  Turbo::StreamsChannel.broadcast_remove_to(@board_configs.kanban_live_frame(@board), target: dom_id(@list)) %>
+<% else %>
+    <%= turbo_stream.remove dom_id(@list) %>
+<% end %>

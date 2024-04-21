@@ -1,0 +1,9 @@
+<%= render "kanban7/modal" do %>
+  <div class="mx-auto w-full">
+        <%= render partial: @board_configs.detail_card_partial, 
+            locals: {
+                @board_configs.card_model_symbol => @card,
+            } 
+        %>
+  </div>
+<% end %>

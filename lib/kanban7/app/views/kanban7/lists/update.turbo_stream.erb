@@ -1,0 +1,28 @@
+<% if params[:next_view_id] %>
+    <% prev_list = @board_configs.list_model.find_by(id: params[:next_view_id].split("_").last) %>
+    <% if @board_configs.live? %>
+        <%  Turbo::StreamsChannel.broadcast_append_later_to(
+                @board_configs.kanban_live_frame(@board),
+                target: dom_id(@board), 
+                partial: "kanban7/lists/move",
+                locals: { next_view_id: params[:next_view_id], board: @board, list: @list, curr: position(@list), prev: (prev_list&.position || prev_list&.id || 0), current_user: current_user, board_configs: @board_configs }) 
+        %>
+    <% else %>
+        <%= turbo_stream.after dom_id(@board) do %>
+            <%= render "kanban7/lists/move", next_view_id: params[:next_view_id], board: @board, list: @list, curr: position(@list), prev: (prev_list&.position || prev_list&.id || 0), current_user: current_user, board_configs: @board_configs %>
+        <% end %>
+    <% end %>
+<% else %>
+    <% if @board_configs.live? %>
+        <%  Turbo::StreamsChannel.broadcast_replace_later_to(
+            @board_configs.kanban_live_frame(@board),
+            target: "#{dom_id(@list)}-header", 
+            partial: @board_configs.header_list_partial,
+            locals: { @board_configs.list_model_symbol => @list }) 
+        %>
+    <% else %>
+        <%= turbo_stream.replace "#{dom_id(@list)}-header" do %>
+            <%= render partial: @board_configs.header_list_partial, locals: { @board_configs.list_model_symbol => @list } %>
+        <% end %>
+    <% end %>
+<% end %>

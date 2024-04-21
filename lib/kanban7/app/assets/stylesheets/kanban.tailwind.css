@@ -1,0 +1,59 @@
+@tailwind components;
+
+@layer components {
+    .board {
+        @apply h-screen bg-red-50 overflow-x-auto overflow-y-hidden;
+    }
+
+    .board .lists {
+        @apply mt-5 ml-5 grid grid-flow-col auto-cols-max gap-4;
+    }
+
+    .board .add-list-btn {
+        @apply block h-10 py-2 px-5 bg-slate-300 hover:border-2 hover:border-slate-400 text-white rounded;
+    }
+
+    .list-header {
+        @apply block flex justify-between bg-slate-200 rounded-t p-3 font-bold relative;
+    }
+
+    .list {
+        @apply h-auto w-72 max-h-176 bg-slate-200 overflow-x-hidden relative;
+    }
+
+    .list-gap {
+        @apply !pl-60;
+    }
+
+    .list .add-card-btn {
+        @apply block bg-slate-200 hover:border hover:border-slate-300 text-white text-left pl-2 py-4 rounded-b sticky bottom-0 left-0 right-0;
+    }
+
+    .card {
+        @apply bg-slate-200 p-2;
+    }
+
+    .card-item {
+        @apply flex justify-between bg-white p-2 rounded relative;
+    }
+
+    .card-gap {
+        @apply !pt-14;
+    }
+
+    .popup-action {
+        @apply absolute top-0 bottom-0 right-0 p-3 text-center text-sm text-gray-300 hover:text-gray-500 hover:cursor-pointer;
+    }
+
+    .popup-action .popup-action-options {
+        @apply z-50 absolute top-3 right-0 w-32 bg-white border border-gray-200 drop-shadow-lg shadow-gray-500/50;
+    }
+
+    .popup-action-options .popup-action-title {
+        @apply block px-2 py-1 flex justify-between text-gray-500 border-b border-gray-400 hover:cursor-pointer;
+    }
+
+    .popup-action-options .action-option {
+        @apply block px-2 py-1 text-left text-gray-500 hover:bg-gray-300;
+    }
+}
