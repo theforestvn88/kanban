@@ -1,12 +1,12 @@
 RSpec.shared_examples "Authentication Require" do
     context "anynomous user" do
         it "returns http success" do
-            request
+          request
           expect(response).to redirect_to(:new_user_session)
         end
       end
   
-      context "sig_in user" do
+      context "signed-in user" do
         let(:user) { create(:user) }
   
         before do

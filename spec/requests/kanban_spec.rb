@@ -1,8 +1,18 @@
 require 'rails_helper'
-require 'requests/shared_examples/authentication_require'
 
 RSpec.describe "Kanbans", type: :request do
-  it_behaves_like "Authentication Require" do
-    let(:request) { get "/" }
+  context "anonymous user" do
+    it "returns http success" do
+      get "/"
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  context "signed_in user" do
+    it "redirect to boards" do
+      sign_in create(:user)
+      get "/"
+      expect(response).to redirect_to(:boards)
+    end
   end
 end

@@ -5,15 +5,32 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    
-    <%= yield %>
+    <div class="h-screen w-screen flex flex-col">
+      <%= turbo_frame_tag "modal" %>
+      <%= turbo_frame_tag "flash" %>
+
+      <div class="w-full border-b border-indigo-600 py-2 px-5">
+        <h1 class="text-indigo-600 font-extrabold text-3xl">Kanban</h1>
+      </div>
+
+      <div class="w-full h-full flex">
+        <div class="w-52 border-r border-indigo-600 px-3 py-5">
+          <div><%= link_to "Boards", boards_path, class: "text-indigo-600" %></div>
+          <div><a href="">Members</a></div>
+          <div><a href="">Rules</a></div>
+        </div>
+        <div class="w-full">
+          <%= yield %>
+        </div>
+      </div>
+      
+    </div>
   </body>
 </html>

@@ -1,0 +1,7 @@
+<%= clear_modal %>
+
+<%= turbo_stream.append boards_grid_view_id_for(current_user) do %>
+    <%= render @board %>
+<% end %>
+
+<%= show_flash_if_any %>
