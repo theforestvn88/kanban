@@ -2,25 +2,37 @@ require 'rails_helper'
 require 'requests/shared_examples/authentication_require'
 
 RSpec.describe "Boards", type: :request do
+  let(:board) { create(:board) }
+  let(:user) { create(:user) }
+  let(:valid_board_params) { { board: { name: "test" } } }
+  let(:invalid_board_params) { { board: { name: "" } } }
+  
   it_behaves_like "Authentication Require" do
     let(:request) { get "/boards" }
   end
 
   it_behaves_like "Authentication Require" do
-    let(:board) { create(:board) }
+    let(:request) { get "/boards/new" }
+  end
+  
+  it_behaves_like "Authentication Require" do
+    let(:request) { post "/boards.turbo_stream", params: valid_board_params }
+  end
+
+  it_behaves_like "Authentication Require" do
     let(:request) { get "/boards/#{board.id}" }
   end
 
   it_behaves_like "Authentication Require" do
-    let(:request) { get "/boards/new" }
+    let(:request) { get "/boards/#{board.id}/edit" }
   end
 
-  let(:user) { create(:user) }
-  let(:valid_board_params) { { board: { name: "test" } } }
-  let(:invalid_board_params) { { board: { name: "" } } }
+  it_behaves_like "Authentication Require" do
+    let(:request) { put "/boards/#{board.id}.turbo_stream", params: valid_board_params }
+  end
 
   it_behaves_like "Authentication Require" do
-    let(:request) { post "/boards.turbo_stream", params: valid_board_params }
+    let(:request) { delete "/boards/#{board.id}.turbo_stream" }
   end
 
   describe "crud" do
@@ -28,26 +40,26 @@ RSpec.describe "Boards", type: :request do
       sign_in user
     end
 
-    it "create new board with valid params" do
+    it "should create new board with valid params" do
       expect {
         post "/boards.turbo_stream", params: valid_board_params
       }.to change(user.boards, :count).by(1)
     end
 
-    it "do not create new board with invalid params" do
+    it "should not create new board with invalid params" do
       expect {
         post "/boards.turbo_stream", params: invalid_board_params
       }.not_to change(user.boards, :count)
     end
 
-    it "edit board with valid params" do
+    it "should update board with valid params" do
       edited_board = create(:board, name: "???")
 
       put "/boards/#{edited_board.id}.turbo_stream", params: valid_board_params
       expect(edited_board.reload.name).to eq("test")
     end
 
-    it "edit board with invalid params" do
+    it "should not update board with invalid params" do
       edited_board = create(:board, name: "???")
 
       put "/boards/#{edited_board.id}.turbo_stream", params: invalid_board_params
