@@ -1,0 +1,3 @@
+<%= render(layout: 'shared/modal', locals: { title: 'Edit list' }) do %>
+    <%= render "form", list: @list, board: @list.board %>
+<% end %>

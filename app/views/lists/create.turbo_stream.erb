@@ -1,0 +1,7 @@
+<%= clear_modal %>
+
+<%= turbo_stream.before "#{dom_id(@board)}_new_list" do %>
+    <%= render @list %>
+<% end %>
+
+<%= show_flash_if_any %>

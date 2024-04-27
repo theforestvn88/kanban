@@ -1,0 +1,7 @@
+<%= clear_modal %>
+
+<%= turbo_stream.replace dom_id(@list) do %>
+    <%= render @list %>
+<% end %>
+
+<%= show_flash_if_any %>
