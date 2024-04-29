@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'requests/shared_examples/authentication_require'
 
-RSpec.describe "Lists", type: :request do
+RSpec.describe "/lists", type: :request do
     let!(:user) { create(:user) }
     let!(:board) { create(:board, user: user) }
     let!(:list) { create(:list, board: board, user: user) }
@@ -17,15 +17,15 @@ RSpec.describe "Lists", type: :request do
     end
 
     it_behaves_like "Authentication Require" do
-        let(:request) { get "/boards/#{board.id}/lists/#{list.id}/edit" }
+        let(:request) { get "/lists/#{list.id}/edit" }
     end
 
     it_behaves_like "Authentication Require" do
-        let(:request) { put "/boards/#{board.id}/lists/#{list.id}.turbo_stream", params: valid_list_params }
+        let(:request) { put "/lists/#{list.id}.turbo_stream", params: valid_list_params }
     end
 
     it_behaves_like "Authentication Require" do
-        let(:request) { delete "/boards/#{board.id}/lists/#{list.id}.turbo_stream" }
+        let(:request) { delete "/lists/#{list.id}.turbo_stream" }
     end
 
     describe "crud" do
@@ -46,19 +46,19 @@ RSpec.describe "Lists", type: :request do
         end
 
         it "should update list with valid params" do
-            put "/boards/#{board.id}/lists/#{list.id}.turbo_stream", params: { list: { name: "updated" } }
+            put "/lists/#{list.id}.turbo_stream", params: { list: { name: "updated" } }
             expect(list.reload.name).to eq("updated")
         end
 
         it "should not update list with invalid params" do
             expect {
-                put "/boards/#{board.id}/lists/#{list.id}.turbo_stream", params: { list: { name: "" } }
+                put "/lists/#{list.id}.turbo_stream", params: { list: { name: "" } }
             }.not_to change(list, :name)
         end
 
         it "destroy list" do
             expect {
-                delete "/boards/#{board.id}/lists/#{list.id}.turbo_stream"
+                delete "/lists/#{list.id}.turbo_stream"
             }.to change(board.lists, :count).by(-1)
         end
     end

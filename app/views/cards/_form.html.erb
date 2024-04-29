@@ -1,0 +1,25 @@
+<%= form_with(model: [list, card], id: "#{dom_id(card)}_form", class: "contents") do |f| %>
+  <% if card.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+      <h2><%= pluralize(card.errors.count, "error") %> prohibited this board from being saved:</h2>
+
+      <ul>
+        <% card.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="inline">
+    <div class="rounded-md shadow-sm -space-y-px">
+      <div>
+        <%= f.label :title, class: "sr-only", for: "title" %>
+        <%= f.text_field :title, id: "title", autofocus: true, placeholder: "Title", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
+      </div>
+    </div>
+    <div class="actions w-full flex justify-end">
+      <%= f.submit class: "mt-5 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  </div>
+<% end %>

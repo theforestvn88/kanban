@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'requests/shared_examples/authentication_require'
 
-RSpec.describe "Boards", type: :request do
+RSpec.describe "/boards", type: :request do
   let(:board) { create(:board) }
   let(:user) { create(:user) }
   let(:valid_board_params) { { board: { name: "test" } } }

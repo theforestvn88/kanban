@@ -1,0 +1,7 @@
+<%= clear_modal %>
+
+<%= turbo_stream.append "#{dom_id(@list)}_cards" do %>
+    <%= render @card %>
+<% end %>
+
+<%= show_flash_if_any %>
