@@ -23,10 +23,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_131908) do
     t.string "title"
     t.text "description"
     t.integer "list_id", null: false
+    t.integer "board_id", null: false
     t.float "position"
+    t.float "prev_position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.index ["board_id"], name: "index_cards_on_board_id"
     t.index ["list_id"], name: "index_cards_on_list_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
@@ -35,6 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_131908) do
     t.string "name"
     t.integer "board_id", null: false
     t.float "position"
+    t.float "prev_position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
@@ -55,6 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_131908) do
   end
 
   add_foreign_key "boards", "users"
+  add_foreign_key "cards", "boards"
   add_foreign_key "cards", "lists"
   add_foreign_key "cards", "users"
   add_foreign_key "lists", "boards"
