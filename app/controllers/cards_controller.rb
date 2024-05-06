@@ -11,7 +11,7 @@ class CardsController < ApplicationController
   end
 
   def create
-    @card = Card.new(card_params.merge(list: @list, user: current_user))
+    @card = Card.new(card_params.merge(list: @list, board_id: @list.board_id, user: current_user))
 
     respond_to do |format|
       if @card.save

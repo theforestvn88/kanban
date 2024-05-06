@@ -2,6 +2,7 @@
 
 <%= turbo_stream.append "#{dom_id(@list)}_cards" do %>
     <%= render @card %>
+    <script>console.log("THIS IS A SCRIPT ...")</script>
 <% end %>
 
 <%= show_flash_if_any %>

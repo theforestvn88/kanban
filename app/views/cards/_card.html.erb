@@ -1,1 +1,6 @@
-<%= link_to card.title, card_path(card), data: { turbo_frame: :modal }, id: dom_id(card), class: "text-gray-600 border border-indigo-300 hover:bg-gray-100 px-10 py-5 m-5 flex items-center" %>
+<%= link_to card.title, card_path(card), 
+    data: { turbo_frame: :modal }, 
+    id: dom_id(card), 
+    draggable: true,
+    droppable: true,
+    class: "text-gray-600 border border-indigo-300 hover:bg-gray-100 px-10 py-5 m-5 flex items-center" %>

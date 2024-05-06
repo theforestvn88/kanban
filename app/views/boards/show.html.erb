@@ -1,5 +1,7 @@
 <%= turbo_frame_tag main_frame_tag_id_for(current_user) do %>
-  <div id="<%= dom_id(@board) %>" class="flex justify-start ml-5 mt-5 overflow-x-auto">
+  <div id="<%= dom_id(@board) %>" class="flex justify-start ml-5 mt-5 overflow-x-auto"
+    data-controller="dad"
+    data-action="dragstart->dad#dragStart dragover->dad#dragOver dragleave->dad#dragLeave dragenter->dad#dragEnter drop->dad#drop dragEnd->dad#dragEnd">
     <%= render @board.lists %>
     <%= link_to "+ create new list", new_board_list_path(@board), data: { turbo_frame: :modal }, id: "#{dom_id(@board)}_new_list", class: "text-gray-600 border border-dashed border-indigo-300 hover:bg-gray-100 w-96 min-h-20 px-10 ml-10 flex items-center" %>
   </div>

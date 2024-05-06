@@ -1,0 +1,5 @@
+<%= turbo_stream.remove "#{dom_id(@drag_card)}"%>
+
+<%= turbo_stream.before "#{dom_id(@drop_card)}" do %>
+    <%= render @drag_card %>
+<% end %>

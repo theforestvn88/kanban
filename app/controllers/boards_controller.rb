@@ -1,13 +1,17 @@
 class BoardsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_board, only: [:show, :edit, :update, :destroy]
-  
+  before_action :set_board, only: [:edit, :update, :destroy]
+
   def index
     @current_user_boards = current_user.boards
   end
 
   def show
     session[:current_board] = params[:id]
+    set_board
+  rescue ActiveRecord::RecordNotFound => e
+    session[:current_board] = nil
+    redirect_to root_path
   end
 
   def new
