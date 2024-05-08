@@ -1,4 +1,22 @@
 [
-    { "name": "board1" },
+    { 
+        "id": 1,
+        "name": "board1",
+        "lists": [
+            {
+                "id": 1,
+                "name": "list1",
+                "cards": [
+                    { "id": 1, "title": "card1" },
+                    { "id": 2, "title": "card2" },
+                    { "id": 3, "title": "card3" },
+                    { "id": 4, "title": "card4" }
+                ]
+            },
+            {
+                "name": "list2"
+            }
+        ]
+    },
     { "name": "board2" }
 ]
