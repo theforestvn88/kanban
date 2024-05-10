@@ -31,6 +31,7 @@ describe("user Kanban", () => {
         cy.visit("/");
         cy.get('a[href="/boards"]').click();
         cy.get('a').contains('board1').click();
+
         cy.get('@boards').then((boards) => {
             const board1 = boards[0];
             for(const list of board1.lists) {
@@ -43,6 +44,58 @@ describe("user Kanban", () => {
                     cy.get('a').should('contain', card.title);
                 }
             });
+
+            const list2 = board1.lists[1];
+            cy.get(`div[id="list_${list2.id}"]`).within(() => {
+                for(const card of list2.cards) {
+                    cy.get('a').should('contain', card.title);
+                }
+            });
         })
     });
+
+    it("drag & drop cards", () => {
+        cy.visit("/");
+        cy.get('a[href="/boards"]').click();
+        cy.get('a').contains('board1').click();
+
+        const dataTransfer = new DataTransfer();
+
+        cy.get(`a[id="card_1"]`).trigger('pointerdown', {
+            which: 1,
+            button: 0,
+            eventConstructor: 'PointerEvent',
+            force: true
+        })
+        .trigger('mousedown', {
+            which: 1,
+            button: 0,
+            eventConstructor: 'MouseEvent',
+            force: true
+        })
+        .trigger('dragstart', { 
+            dataTransfer, 
+            force: true, 
+            eventConstructor: 'DragEvent' 
+        });
+
+        cy.get(`a[id="card_5"]`).trigger('dragover', {
+            dataTransfer,
+            eventConstructor: 'DragEvent',
+            force: true
+        })
+        .trigger('drop', {
+            dataTransfer,
+            eventConstructor: 'DragEvent',
+            force: true
+        });
+        
+        cy.get('@boards').then((boards) => {
+            const board1 = boards[0];
+            const list2 = board1.lists[1];
+            cy.get(`div[id="list_${list2.id}"]`).within(() => {
+                cy.get('a').should('contain', "card1");
+            });
+        });
+    })
 });

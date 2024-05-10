@@ -9,7 +9,7 @@ class KanbanController < ApplicationController
     end
   end
 
-  def dad_card
+  def dnd_card
     return if params[:type] != 'card'
 
     result = Kanban::CardDrop.call(drag_card_id: params[:drag_id], drop_card_id: params[:drop_id])

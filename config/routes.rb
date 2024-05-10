@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "kanban#index"
-  post "/kanban/dad_card", to: "kanban#dad_card"
+  post "/kanban/dnd_card", to: "kanban#dnd_card"
 
   resources :boards, shallow: true do
     resources :lists, shallow: true, except: [:index, :show] do

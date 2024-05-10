@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // drag and drop controller
 export default class extends Controller {
     connect() {
-        console.log("DAD controller ...")
+        console.log("DnD controller ...")
         this.shadow = document.createElement("div")
         this.shadow.setAttribute("id", "shadow")
         this.shadow.classList.add("px-10", "py-5", "m-5", "border", "border-dashed", "border-indigo-300")
@@ -22,6 +22,7 @@ export default class extends Controller {
     }
 
     dragOver(event) {
+    console.log("DRAG OVER ...")
         this.#moveDragItem(event.x, event.y)
 
         this.cloneDI.classList.add("hidden")
@@ -83,7 +84,7 @@ console.log(this.dropOverElement.parentNode)
             // }
             // if (dropId) dropBody["next_view_id"] = `${dropId}`
 
-            this.#sendDropApi(`/kanban/dad_${dragObjectType}.turbo_stream`, dropBody)
+            this.#sendDropApi(`/kanban/dnd_${dragObjectType}.turbo_stream`, dropBody)
                 .then(html => {
                     this.#revert(document.getElementById(`${dragObjectType}_${dragObjectId}`))    
                     Turbo.renderStreamMessage(html)
@@ -91,7 +92,7 @@ console.log(this.dropOverElement.parentNode)
                     this.shadow.remove()
                 })
                 .catch(error => {
-                    console.log("DAD ERROR")
+                    console.log("DnD ERROR")
                     console.log(error)
                     error.then(html => {
                         console.log(html)

@@ -6,7 +6,7 @@ module Kanban
             end
         end
 
-        def validate_available!(*dad_objects)
+        def validate_available!(*dnd_objects)
             # TODO
         end
 
