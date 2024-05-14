@@ -7,10 +7,10 @@ class BoardsController < ApplicationController
   end
 
   def show
-    session[:current_board] = params[:id]
+    current_user_session["current_board"] = params[:id]
     set_board
   rescue ActiveRecord::RecordNotFound => e
-    session[:current_board] = nil
+    current_user_session["current_board"] = nil
     redirect_to root_path
   end
 

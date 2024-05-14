@@ -16,16 +16,22 @@
       <%= turbo_frame_tag "modal" %>
       <%= turbo_frame_tag "flash" %>
 
-      <div class="w-full border-b border-indigo-600 py-2 px-5">
+      <div class="w-full flex justify-between border-b border-indigo-600 py-2 px-5">
         <h1 class="text-indigo-600 font-extrabold text-3xl">Kanban</h1>
+        <% if user_signed_in? %>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "text-indigo-600" %>
+        <% end %>
       </div>
 
       <div class="w-full h-full flex">
-        <div class="w-52 border-r border-indigo-600 px-3 py-5">
-          <div><%= link_to "Boards", boards_path, class: "text-indigo-600" %></div>
-          <div><a href="">Members</a></div>
-          <div><a href="">Rules</a></div>
-        </div>
+        <% if user_signed_in? %>
+          <div class="w-52 border-r border-indigo-600 px-3 py-5">
+            <div><%= link_to "Boards", boards_path, class: "text-indigo-600" %></div>
+            <div><a href="">Members</a></div>
+            <div><a href="">Rules</a></div>
+          </div>
+        <% end %>
+
         <div class="w-full">
           <%= yield %>
         </div>
