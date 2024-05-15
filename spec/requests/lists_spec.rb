@@ -28,6 +28,10 @@ RSpec.describe "/lists", type: :request do
         let(:request) { delete "/lists/#{list.id}.turbo_stream" }
     end
 
+    it_behaves_like "Authentication Require" do
+        let(:request) { get "/lists/#{list.id}/actions" }
+    end
+
     describe "crud" do
         before do
             sign_in user

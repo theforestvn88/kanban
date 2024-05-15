@@ -35,7 +35,7 @@ describe("user Kanban", () => {
         cy.get('@boards').then((boards) => {
             const board1 = boards[0];
             for(const list of board1.lists) {
-                cy.get('span').should('contain', list.name);
+                cy.get('div').should('contain', list.name);
             }
 
             const list1 = board1.lists[0];
@@ -53,6 +53,16 @@ describe("user Kanban", () => {
             });
         })
     });
+
+    it("do some `actions` with list", () => {
+        cy.visit("/");
+        cy.get('a[href="/boards"]').click();
+        cy.get('a').contains('board1').click();
+
+        cy.get('div[id="list_1"] button[data-action="click->popup#toggle"]').click();
+        cy.get('turbo-frame[id="partial_content"] div div a').should('have.attr', 'href').and('contain', '/lists/1/edit');
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(1).should('have.attr', 'data-turbo-method').and('contain', 'delete');
+    })
 
     it("drag & drop cards", () => {
         cy.visit("/");

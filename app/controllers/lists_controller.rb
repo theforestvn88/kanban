@@ -1,7 +1,7 @@
 class ListsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_board, only: [:new, :create]
-    before_action :set_list, only: [:edit, :update, :destroy]
+    before_action :set_list, only: [:edit, :update, :destroy, :actions]
 
     def new
         @list = List.new(board: @board)
@@ -38,6 +38,9 @@ class ListsController < ApplicationController
         respond_to do |format|
             format.turbo_stream { flash.now[:notice] = "Your list was destroyed." }
         end
+    end
+
+    def actions
     end
 
     private
