@@ -54,14 +54,28 @@ describe("user Kanban", () => {
         })
     });
 
-    it("do some `actions` with list", () => {
+    it("show actions list popup", () => {
         cy.visit("/");
         cy.get('a[href="/boards"]').click();
         cy.get('a').contains('board1').click();
 
         cy.get('div[id="list_1"] button[data-action="click->popup#toggle"]').click();
-        cy.get('turbo-frame[id="partial_content"] div div a').should('have.attr', 'href').and('contain', '/lists/1/edit');
-        cy.get('turbo-frame[id="partial_content"] div div a').eq(1).should('have.attr', 'data-turbo-method').and('contain', 'delete');
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(0).should('have.attr', 'href').and('contain', '/lists/1/move?step=-1');
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(1).should('have.attr', 'href').and('contain', '/lists/1/move?step=1');
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(2).should('have.attr', 'href').and('contain', '/lists/1/edit');
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(3).should('have.attr', 'data-turbo-method').and('contain', 'delete');
+    })
+
+    it("move list", () => {
+        cy.visit("/");
+        cy.get('a[href="/boards"]').click();
+        cy.get('a').contains('board1').click();
+
+        cy.get('div[id="list_1"] button[data-action="click->popup#toggle"]').click();
+        cy.get('turbo-frame[id="partial_content"] div div a').eq(1).click();
+      
+        cy.get('div[id="board_1"] > div[id*="list"]').eq(0).should('have.attr', 'id').and('contain', 'list_2');
+        cy.get('div[id="board_1"] > div[id*="list"]').eq(1).should('have.attr', 'id').and('contain', 'list_1');
     })
 
     it("drag & drop cards", () => {

@@ -1,0 +1,5 @@
+<% if @next_list %>
+    <%= turbo_stream.move_before(dom_id(@next_list), dom_id(@list)) %>
+<% elsif @prev_list %>
+    <%= turbo_stream.move_before(dom_id(@list), dom_id(@prev_list)) %>
+<% end %>

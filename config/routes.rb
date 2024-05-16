@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
   resources :boards, shallow: true do
     resources :lists, shallow: true, except: [:index, :show] do
-      get :actions, on: :member
+      member do
+        get :actions
+        post :move
+      end
+
       resources :cards, except: [:index]
     end
   end

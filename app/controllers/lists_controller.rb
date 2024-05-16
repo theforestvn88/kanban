@@ -1,7 +1,7 @@
 class ListsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_board, only: [:new, :create]
-    before_action :set_list, only: [:edit, :update, :destroy, :actions]
+    before_action :set_list, except: [:new, :create]
 
     def new
         @list = List.new(board: @board)
@@ -41,6 +41,24 @@ class ListsController < ApplicationController
     end
 
     def actions
+    end
+
+    def move
+        @step = params[:step].to_i
+        list_position = @list.position
+        if @step > 0
+            @next_list = @list.board.lists.where('position > ?', list_position).first
+            return if @next_list.nil?
+
+            @list.update!(position: @next_list.position)
+            @next_list.update!(position: list_position)
+        else
+            @prev_list = @list.board.lists.where('position < ?', list_position).last
+            return if @prev_list.nil?
+
+            @list.update!(position: @prev_list.position)
+            @prev_list.update!(position: list_position)
+        end
     end
 
     private
