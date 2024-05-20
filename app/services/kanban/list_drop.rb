@@ -1,10 +1,6 @@
 module Kanban    
-    class ListDrop
+    class ListDrop < ::BaseService
         include DragAndDrop
-
-        def self.call(...)
-            new(...).call
-        end
 
         def initialize(drag_list_id:, drop_list_id:)
             @drag_list_id = drag_list_id

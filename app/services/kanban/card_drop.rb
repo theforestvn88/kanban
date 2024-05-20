@@ -1,10 +1,6 @@
 module Kanban    
-    class CardDrop
+    class CardDrop < ::BaseService
         include DragAndDrop
-
-        def self.call(...)
-            new(...).call
-        end
 
         def initialize(drag_card_id:, drop_card_id:)
             @drag_card_id = drag_card_id
