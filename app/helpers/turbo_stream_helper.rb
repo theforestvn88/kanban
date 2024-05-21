@@ -1,10 +1,10 @@
 module TurboStreamHelper
     module CustomActions
-        def move_before(from_view_id, to_view_id)
+        def move_before(move_view_id, before:)
             turbo_stream_action_tag(
                 :move_before,
-                from_view_id: from_view_id,
-                to_view_id: to_view_id
+                move_view_id: move_view_id,
+                before_view_id: before
             )
         end
     end

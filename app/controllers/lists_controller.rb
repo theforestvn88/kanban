@@ -41,23 +41,16 @@ class ListsController < ApplicationController
     end
 
     def actions
+        @order = params[:order].to_i
     end
 
     def move
         @step = params[:step].to_i
-        list_position = @list.position
-        if @step > 0
-            @next_list = @list.board.lists.where('position > ?', list_position).first
-            return if @next_list.nil?
+        @order = @list.order_by_position + @step
+        @result = Kanban::ListUpdateOrder.call(list: @list, order: @order)
 
-            @list.update!(position: @next_list.position)
-            @next_list.update!(position: list_position)
-        else
-            @prev_list = @list.board.lists.where('position < ?', list_position).last
-            return if @prev_list.nil?
-
-            @list.update!(position: @prev_list.position)
-            @prev_list.update!(position: list_position)
+        respond_to do |format|
+            format.turbo_stream
         end
     end
 

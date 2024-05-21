@@ -5,12 +5,12 @@ import "controllers"
 // import { StreamActions } from "@hotwired/turbo"
  
 Turbo.StreamActions.move_before = function() {
-    const fromViewId = this.getAttribute("from_view_id")
-    const toViewId = this.getAttribute("to_view_id") 
-    console.log(`move ${fromViewId} ${toViewId}`)
-    const fromView = document.getElementById(fromViewId)
-    const toView = document.getElementById(toViewId)
-    if (fromView && toView) {
-        toView.before(fromView)
+    const moveViewId = this.getAttribute("move_view_id")
+    const beforeViewId = this.getAttribute("before_view_id") 
+    console.log(`move ${moveViewId} before ${beforeViewId}`)
+    const moveView = document.getElementById(moveViewId)
+    const beforeView = document.getElementById(beforeViewId)
+    if (moveView && beforeView) {
+        beforeView.before(moveView)
     }
 }

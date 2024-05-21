@@ -7,6 +7,10 @@ class List < ApplicationRecord
 
   before_create :set_position
 
+  def order_by_position
+    board.lists.where("position <= ?", self.position).count
+  end
+
   private
 
     def set_position

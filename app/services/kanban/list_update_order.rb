@@ -5,7 +5,7 @@ module Kanban
             @order = order
         end
 
-        Result = Struct.new(:success, :list, :errors)
+        Result = Struct.new(:success, :list, :after_list, :before_list, :errors)
 
         def call
             if @order <= 0
@@ -17,10 +17,10 @@ module Kanban
                 FROM (
                     SELECT *,
                         ROW_NUMBER() OVER (
-                            PARTITION BY ?
                             ORDER BY position
                         ) AS row_num
                     FROM lists
+                    WHERE board_id = ?
                 ) t
                 WHERE row_num = ? OR row_num = ?
                 ORDER BY row_num
@@ -29,18 +29,23 @@ module Kanban
             # same order with next_list
             # dont change 
             if @list.id == prev_list.id
-                return Result.new(success: true, list: @list)
+                return Result.new(success: true, list: @list, after_list: nil, before_list: nil)
             end
 
             update_needed_lists = []
+            after_list = nil
+            before_list = nil
+
             if @order == 1 # at the beginning
                 @list.position = prev_list.position/2.0
                 prev_list.prev_position = @list.position
                 update_needed_lists = [@list, prev_list]
+                after_list = prev_list
             elsif next_list.nil? # at the end
                 @list.position = prev_list.position + 1
                 @list.prev_position = prev_list.position
                 update_needed_lists = [@list]
+                before_list = prev_list
             elsif @list.id == next_list.id
                 # swap prev <-> next
                 pos = prev_list.position
@@ -51,6 +56,7 @@ module Kanban
                 next_list.prev_position = prev_pos
 
                 update_needed_lists = [prev_list, next_list]
+                after_list = prev_list
             else
                 # inject into between prev and next
                 @list.position = (prev_list.position + next_list.position) / 2.0
@@ -59,12 +65,14 @@ module Kanban
                 next_list.prev_position = @list.position
 
                 update_needed_lists = [@list, prev_list, next_list]
+                after_list = next_list
+                before_list = prev_list
             end
 
             result = nil
             ActiveRecord::Base.transaction do
                 if update_needed_lists.map(&:save!)
-                    result = Result.new(success: true, list: @list)
+                    result = Result.new(success: true, list: @list, after_list: after_list, before_list: before_list)
                 end
             end
 
